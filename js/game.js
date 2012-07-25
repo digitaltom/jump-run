@@ -3,8 +3,10 @@ var ticks = 0;
 var spriteMap = new Image;
 var actors;
 
+var gameInterval;
+
 // position displayed level
-var scroll_x = 80;
+var scroll_x = 0;
 
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
@@ -59,7 +61,7 @@ function drawElements() {
 
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
-                var object = { sx:null, sy:null, x:((index_x-index_x_start) * tw)-offset_x, y:index_y * th };
+                var object = { sx:null, sy:null, x:((index_x-index_x_start) * tw)-offset_x, y:index_y * th, deadly: false };
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -90,6 +92,32 @@ function drawElements() {
                     case '@':
                         object.sx = 9;
                         object.sy = 2;
+                        object.deadly = true;
+                        collisionMap.push(object);
+                        break;
+                    case '1':
+                        object.sx = 0;
+                        object.sy = 7;
+                        break;
+                    case '2':
+                        object.sx = 1;
+                        object.sy = 7;
+                        break;
+                    case '3':
+                        object.sx = 2;
+                        object.sy = 7;
+                        break;
+                    case '4':
+                        object.sx = 0;
+                        object.sy = 8;
+                        break;
+                    case '5':
+                        object.sx = 1;
+                        object.sy = 8;
+                        break;
+                    case '6':
+                        object.sx = 2;
+                        object.sy = 8;
                         break;
                     default:
                 }
@@ -179,19 +207,41 @@ function updateCharacters() {
 
         collisionMap.forEach(function (object) {
             //collisionMap.every(function (object) {
+            var collides = false;
 
-            // we are below or above an item
+            // we are below or above an object
             if (projected_right >= (object.x+size.tile.target.w*0.3) && projected_left <= object.x + size.tile.target.w*0.7) {
                 // check bounce bottom:
                 if (projected_bottom >= object.y && projected_top < object.y) {
                     projected_top = object.y - size.tile.target.h;
                     actor.speed.y = 0;
-                }
+                    collides = true;
                 // check bounce top:
-                if (projected_top <= (object.y + size.tile.target.h) && projected_top > object.y) {
+                } else if (projected_top <= (object.y + size.tile.target.h) && projected_top > object.y) {
                     projected_top = object.y + size.tile.target.h;
                     actor.speed.y = 0.5;
+                    collides = true;
                 }
+            }
+            // we are right or left of an object
+            if ( (projected_top >= object.y) && (projected_top <= (object.y + size.tile.target.h) ) ) {
+                // check bounce right
+                if (projected_right >= object.x && projected_left < object.x+size.tile.target.w) {
+                    projected_left =  object.x - size.tile.target.w;
+                    actor.speed.x = 0;
+                    collides = true;
+                }
+                // check bounce left
+
+                //if (projected_left < object.x+size.tile.target.w && projected_right > object.x) {
+                //    projected_left =  object.x + size.tile.target.w;
+                //    actor.speed.x = 0;
+                //    collides = true;
+                //}
+            }
+
+            if ((collides == true && object.deadly == true) || (projected_top > size.canvas.h)){
+                gameOver();
             }
 
         })
@@ -220,6 +270,7 @@ function drawControls() {
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
     ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h*2 );
+    ctx.strokeText("Objects: " + collisionMap.length, size.tile.target.w, size.tile.target.h*3 );
 }
 
 
@@ -240,6 +291,14 @@ function drawActors() {
         );
 
     });
+
+}
+
+
+function gameOver() {
+    // todo: dying animation
+    ctx.strokeText("Game Over", size.tile.target.w*5, size.tile.target.h*6 );
+    window.clearInterval(gameInterval);
 
 }
 
@@ -294,15 +353,11 @@ window.onkeyup = function (e) {
 
 function gameTick() {
     ticks++;
-    //processKeyboard();
-
     drawElements();
     updateCharacters();
-    //updateElements();
-
+    updateElements();
 
     drawActors();
-
     drawControls();
 }
 
@@ -315,7 +370,7 @@ function initGame() {
     spriteMap.src = 'images/smb_tiles.png';
 
     player = {
-        pos:{x:10 * size.tile.target.w, y:10 * size.tile.target.h},
+        pos:{x:size.tile.target.w, y:10 * size.tile.target.h},
         sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}
@@ -324,7 +379,7 @@ function initGame() {
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
 
-    setInterval(gameTick, 1000 / 30);
+    gameInterval = setInterval(gameTick, 1000 / 30);
 }
 
 
