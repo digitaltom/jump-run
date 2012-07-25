@@ -111,6 +111,7 @@ function updateCharacters() {
 
         if (held.left && actor.speed.y == 0) {
             actor.speed.x -= 1.5;
+
         } else if (held.right && actor.speed.y == 0) {
             actor.speed.x += 1.5;
         }
@@ -120,13 +121,34 @@ function updateCharacters() {
             // this only causes a duck animation, nothing happens in term of speed
         }
 
+
+        // player anim
+        if (actor.speed.x > 0) {
+            actor.sprite.y = 16;
+        } else if (actor.speed.x < 0) {
+            actor.sprite.y = 48;
+        }
+
+        if (actor.speed.y != 0) {
+           actor.sprite.x = 85;
+        } else {
+        if (actor.speed.x == 0) {
+            actor.sprite.x = 0;
+        } else if (actor.sprite.x >= 48) {
+            actor.sprite.x = 16;
+        } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0) ) {
+            actor.sprite.x += 16;
+        }
+        }
+
+
         // apply friction and gravity.
         if (actor.speed.y == 0) {
             actor.speed.x *= 0.8;
         }
         actor.speed.y += 2;
-        if (Math.abs(actor.speed.x) < 0.01) actor.speed.x = 0;
-        if (Math.abs(actor.speed.y) < 0.01) actor.speed.y = 0;
+        if (Math.abs(actor.speed.x) < 0.8) actor.speed.x = 0;
+        if (Math.abs(actor.speed.y) < 0.1) actor.speed.y = 0;
 
 
         // apply speed: speed limit of max 1 tile per frame
@@ -206,8 +228,8 @@ function drawActors() {
 
         ctx.drawImage(
             actor.spriteMap,
-            0,
-            16,
+            actor.sprite.x,
+            actor.sprite.y,
             actor.size.w,
             actor.size.h,
             actor.pos.x,
@@ -225,6 +247,9 @@ window.onkeydown = function (e) {
     switch (e.keyCode) {
         case 37: // left
             held.left = true;
+            break;
+        case 32: // space
+            held.up = true;
             break;
         case 38: // up
             held.up = true;
@@ -246,6 +271,9 @@ window.onkeyup = function (e) {
     switch (e.keyCode) {
         case 37: // left
             held.left = false;
+            break;
+        case 32: // space
+            held.up = false;
             break;
         case 38: // up
             held.up = false;
@@ -287,6 +315,7 @@ function initGame() {
 
     player = {
         pos:{x:0, y:13 * size.tile.target.h},
+        sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}
     };
