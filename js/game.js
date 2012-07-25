@@ -86,6 +86,10 @@ function drawElements() {
                         object.sx = 2;
                         object.sy = 1;
                         break;
+                    case '@':
+                        object.sx = 9;
+                        object.sy = 2;
+                        break;
                     default:
                 }
                 //alert(sx);
@@ -105,23 +109,27 @@ function updateCharacters() {
 
     actors.forEach(function (actor) {
 
-        if (held.left) {
+        if (held.left && actor.speed.y == 0) {
             actor.speed.x -= 1.5;
-        } else if (held.right) {
+        } else if (held.right && actor.speed.y == 0) {
             actor.speed.x += 1.5;
         }
-        if (held.up) {
-            actor.speed.y -= 15;
+        if (held.up && actor.speed.y == 0) {
+            actor.speed.y -= 25.5;
         } else if (held.down) {
             // this only causes a duck animation, nothing happens in term of speed
         }
 
-        // apply speed, friction and gravity.
-        actor.speed.x *= 0.8;
+        // apply friction and gravity.
+        if (actor.speed.y == 0) {
+            actor.speed.x *= 0.8;
+        }
+        actor.speed.y += 2;
         if (Math.abs(actor.speed.x) < 0.01) actor.speed.x = 0;
-        //actor.speed.y += 3;
+        if (Math.abs(actor.speed.y) < 0.01) actor.speed.y = 0;
 
-        // speed limit of max 1 tile per frame
+
+        // apply speed: speed limit of max 1 tile per frame
         if (actor.speed.x >= size.tile.target.w) {
             actor.speed.x = size.tile.target.w
         }
@@ -134,23 +142,45 @@ function updateCharacters() {
         if (-actor.speed.y >= size.tile.target.h) {
             actor.speed.y = -size.tile.target.h
         }
+        var projected_left = actor.pos.x + actor.speed.x;
+        var projected_top = actor.pos.y + actor.speed.y;
+        var projected_bottom = projected_top + size.tile.target.h
+        var projected_right = projected_left + size.tile.target.w
 
 
-        //alert(collisionMap);
-        var projected_x = actor.pos.x + actor.speed.x;
-        var projected_y = actor.pos.y + actor.speed.y;
+        // block on screen edge
+        if (projected_left < 0) {
+            projected_left = 0;
+        } else if (projected_right > size.canvas.w) {
+            projected_left = size.canvas.w - size.tile.target.w;
+        }
+
         collisionMap.forEach(function (object) {
+            //collisionMap.every(function (object) {
 
-            // todo: block on screen edge
-
-            if (object.x >= projected_x && object.x <= projected_x + size.tile.target.w) {
-                //alert(object);
+            // we are below or above an item
+            if (projected_right >= (object.x+size.tile.target.w*0.3) && projected_left <= object.x + size.tile.target.w*0.7) {
+                // check bounce bottom:
+                if (projected_bottom >= object.y && projected_top < object.y) {
+                    projected_top = object.y - size.tile.target.h;
+                    actor.speed.y = 0;
+                }
+                // check bounce top:
+                if (projected_top <= (object.y + size.tile.target.h) && projected_top > object.y) {
+                    projected_top = object.y + size.tile.target.h;
+                    actor.speed.y = 0.5;
+                }
             }
+
+            //if (object.x >= projected_x && object.x <= projected_x + size.tile.target.w) {
+            //alert(object);
+            //}
 
         })
 
-        actor.pos.x += actor.speed.x;
-        actor.pos.y += actor.speed.y;
+        actor.pos.x = projected_left;
+        actor.pos.y = projected_top;
+
 
     });
 }
@@ -162,36 +192,12 @@ function updateElements() {
 function drawControls() {
     var actor = actors[0];
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
-        ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), 0, size.tile.target.h);
+        ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
 }
 
 function updateBackground() {
 
 }
-
-
-var blocks = function (x, y) {
-// get corner coordinates in tile coordinates
-    var tl = {
-        x:Math.floor(x / size.tile.w),
-        y:Math.floor(y / size.tile.h)
-    };
-    var br = {
-        x:Math.ceil(x / size.tile.w) + 1,
-        y:Math.ceil(y / size.tile.h) + 1
-    };
-// loop through all blocks in this rectangle
-// note that the bottom right coords are exclusive
-// this solves an important problem when the sprite
-// has the same size as the grid.
-    for (var x = tl.x; x < br.x; ++x) {
-        for (var y = tl.y; y < br.y; ++y) {
-            if (backgroundMap[toIndex(x, y)]) return true;
-        }
-    }
-// none of the tiles blocked, move is ok
-    return false;
-};
 
 
 function drawActors() {
@@ -201,13 +207,13 @@ function drawActors() {
         ctx.drawImage(
             actor.spriteMap,
             0,
-            0,
+            16,
             actor.size.w,
             actor.size.h,
             actor.pos.x,
             actor.pos.y,
             size.tile.target.w,
-            size.tile.target.h * 2
+            size.tile.target.h
         );
 
     });
@@ -280,8 +286,8 @@ function initGame() {
     spriteMap.src = 'images/smb_tiles.png';
 
     player = {
-        pos:{x:0, y:15 * size.tile.target.h},
-        size:{w:16, h:32},
+        pos:{x:0, y:13 * size.tile.target.h},
+        size:{w:16, h:16},
         speed:{x:0, y:0}
     };
     player.spriteMap = new Image;
