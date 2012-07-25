@@ -4,7 +4,7 @@ var spriteMap = new Image;
 var actors;
 
 // position displayed level
-var scroll_x = 0;
+var scroll_x = 80;
 
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
@@ -48,17 +48,18 @@ function drawElements() {
             var th = size.tile.target.h;
 
 
+            if (scroll_x < 0 ) {
+                scroll_x = 0;
+            }
             // first tile to display:
-            var index_x = scroll_x / size.tile.target.w
+            var index_x_start = scroll_x / size.tile.target.w
+            var offset_x = scroll_x % size.tile.target.w
             // last tile to show
-            var index_max = index_x + size.tiles.target.w
+            var index_x_max = index_x_start + size.tiles.target.w+1
 
-            // offset
-            //-(scroll_x % size.tiles.target.w)
+            for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
-            for (; index_x < index_max; index_x++) {
-
-                var object = { sx:null, sy:null, x:index_x * tw, y:index_y * th };
+                var object = { sx:null, sy:null, x:((index_x-index_x_start) * tw)-offset_x, y:index_y * th };
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -92,9 +93,8 @@ function drawElements() {
                         break;
                     default:
                 }
-                //alert(sx);
                 if (object.sx != null && object.sy != null) {
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1), object.sy * (sh + 1), sw, sh, object.x, object.y, tw, th);
+                    ctx.drawImage(spriteMap, object.sx * (sw + 1) , object.sy * (sh + 1) , sw-1, sh, object.x, object.y, tw, th);
                 }
             }
 
@@ -170,7 +170,7 @@ function updateCharacters() {
         var projected_right = projected_left + size.tile.target.w
 
 
-        // block on screen edge
+        // block on level edge
         if (projected_left < 0) {
             projected_left = 0;
         } else if (projected_right > size.canvas.w) {
@@ -194,15 +194,19 @@ function updateCharacters() {
                 }
             }
 
-            //if (object.x >= projected_x && object.x <= projected_x + size.tile.target.w) {
-            //alert(object);
-            //}
-
         })
 
-        actor.pos.x = projected_left;
+        // move the player when the level is at it's border, else move the level
+        // todo: right level end
+         if (scroll_x <= 0) {
+            actor.pos.x = projected_left;
+             if (projected_left > (size.canvas.w/2)){
+             scroll_x = 1;
+             }
+        } else {
+            scroll_x += actor.speed.x;
+        }
         actor.pos.y = projected_top;
-
 
     });
 }
@@ -215,10 +219,7 @@ function drawControls() {
     var actor = actors[0];
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
-}
-
-function updateBackground() {
-
+    ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h*2 );
 }
 
 
@@ -314,7 +315,7 @@ function initGame() {
     spriteMap.src = 'images/smb_tiles.png';
 
     player = {
-        pos:{x:0, y:13 * size.tile.target.h},
+        pos:{x:10 * size.tile.target.w, y:10 * size.tile.target.h},
         sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}
