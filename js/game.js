@@ -11,6 +11,20 @@ var scroll_x = 0;
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
 
+
+// speed, gravity parameters
+var speed = {
+    player:{
+        velocity_x:1.5,
+        velocity_x_jump:1,
+        velocity_y:25.5,
+        gravity:2,
+        friction:0.8,
+        speed_limit_x:10,
+        speed_limit_y:25
+    }
+}
+
 // size details about various aspects of the game
 var size = {
     tile:{ // size of tiles
@@ -35,7 +49,7 @@ function drawElements() {
     ctx.clearRect(0, 0, size.canvas.w, size.canvas.h);
     collisionMap = [];
 
-    levels[0].forEach(function (linecontent, index_y) {
+    levels[0].level.forEach(function (linecontent, index_y) {
 
             // 5 free lines on top, 13 lines of level content
             index_y += 5;
@@ -50,18 +64,18 @@ function drawElements() {
             var th = size.tile.target.h;
 
 
-            if (scroll_x < 0 ) {
+            if (scroll_x < 0) {
                 scroll_x = 0;
             }
             // first tile to display:
             var index_x_start = scroll_x / size.tile.target.w
             var offset_x = scroll_x % size.tile.target.w
             // last tile to show
-            var index_x_max = index_x_start + size.tiles.target.w+1
+            var index_x_max = index_x_start + size.tiles.target.w + 1
 
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
-                var object = { sx:null, sy:null, x:((index_x-index_x_start) * tw)-offset_x, y:index_y * th, deadly: false };
+                var object = { sx:null, sy:null, x:((index_x - index_x_start) * tw) - offset_x, y:index_y * th, deadly:false };
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -122,7 +136,7 @@ function drawElements() {
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1) , object.sy * (sh + 1) , sw-1, sh, object.x, object.y, tw, th);
+                    ctx.drawImage(spriteMap, object.sx * (sw + 1), object.sy * (sh + 1), sw - 1, sh, object.x, object.y, tw, th);
                 }
             }
 
@@ -137,20 +151,27 @@ function updateCharacters() {
 
     actors.forEach(function (actor) {
 
-        if (held.left && actor.speed.y == 0) {
-            actor.speed.x -= 1.5;
-
-        } else if (held.right && actor.speed.y == 0) {
-            actor.speed.x += 1.5;
+        if (actor.speed.y == 0) {
+            if (held.left && actor.speed.y == 0) {
+                actor.speed.x -= speed.player.velocity_x;
+            } else if (held.right && actor.speed.y == 0) {
+                actor.speed.x += speed.player.velocity_x;
+            }
+        } else if (Math.abs(actor.speed.x) < speed.player.velocity_x) {
+            if (held.left) {
+                actor.speed.x -= speed.player.velocity_x_jump;
+            } else if (held.right) {
+                actor.speed.x += speed.player.velocity_x_jump;
+            }
         }
         if (held.up && actor.speed.y == 0) {
-            actor.speed.y -= 25.5;
+            actor.speed.y -= speed.player.velocity_y;
         } else if (held.down) {
             // this only causes a duck animation, nothing happens in term of speed
         }
 
 
-        // player anim
+        // player animation
         if (actor.speed.x > 0) {
             actor.sprite.y = 16;
         } else if (actor.speed.x < 0) {
@@ -158,40 +179,30 @@ function updateCharacters() {
         }
 
         if (actor.speed.y != 0) {
-           actor.sprite.x = 85;
+            actor.sprite.x = 85;
         } else {
-        if (actor.speed.x == 0) {
-            actor.sprite.x = 0;
-        } else if (actor.sprite.x >= 48) {
-            actor.sprite.x = 16;
-        } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0) ) {
-            actor.sprite.x += 16;
-        }
+            if (actor.speed.x == 0) {
+                actor.sprite.x = 0;
+            } else if (actor.sprite.x >= 48) {
+                actor.sprite.x = 16;
+            } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
+                actor.sprite.x += 16;
+            }
         }
 
-
-        // apply friction and gravity.
-        if (actor.speed.y == 0) {
-            actor.speed.x *= 0.8;
-        }
-        actor.speed.y += 2;
+        // apply gravity.
+        actor.speed.y += speed.player.gravity;
         if (Math.abs(actor.speed.x) < 0.8) actor.speed.x = 0;
         if (Math.abs(actor.speed.y) < 0.1) actor.speed.y = 0;
 
+        // apply speed limit
+        if (Math.abs(actor.speed.x) > speed.player.speed_limit_x) {
+            actor.speed.x = speed.player.speed_limit_x * actor.speed.x / Math.abs(actor.speed.x)
+        }
+        if (Math.abs(actor.speed.y) > speed.player.speed_limit_y) {
+            actor.speed.y = speed.player.speed_limit_y * actor.speed.y / Math.abs(actor.speed.y)
+        }
 
-        // apply speed: speed limit of max 1 tile per frame
-        if (actor.speed.x >= size.tile.target.w) {
-            actor.speed.x = size.tile.target.w
-        }
-        if (-actor.speed.x >= size.tile.target.w) {
-            actor.speed.x = -size.tile.target.w
-        }
-        if (actor.speed.y >= size.tile.target.h) {
-            actor.speed.y = size.tile.target.h
-        }
-        if (-actor.speed.y >= size.tile.target.h) {
-            actor.speed.y = -size.tile.target.h
-        }
         var projected_left = actor.pos.x + actor.speed.x;
         var projected_top = actor.pos.y + actor.speed.y;
         var projected_bottom = projected_top + size.tile.target.h
@@ -210,53 +221,63 @@ function updateCharacters() {
             var collides = false;
 
             // we are below or above an object
-            if (projected_right >= (object.x+size.tile.target.w*0.3) && projected_left <= object.x + size.tile.target.w*0.7) {
+            if (projected_right >= (object.x + size.tile.target.w * 0.3) && projected_left <= object.x + size.tile.target.w * 0.7) {
                 // check bounce bottom:
                 if (projected_bottom >= object.y && projected_top < object.y) {
                     projected_top = object.y - size.tile.target.h;
                     actor.speed.y = 0;
                     collides = true;
-                // check bounce top:
+                    // check bounce top:
                 } else if (projected_top <= (object.y + size.tile.target.h) && projected_top > object.y) {
                     projected_top = object.y + size.tile.target.h;
-                    actor.speed.y = 0.5;
+                    actor.speed.y = 1;
                     collides = true;
                 }
             }
             // we are right or left of an object
-            if ( (projected_top >= object.y) && (projected_top <= (object.y + size.tile.target.h) ) ) {
+            if ((projected_top > object.y) && (projected_top < (object.y + size.tile.target.h) )) {
                 // check bounce right
-                if (projected_right >= object.x && projected_left < object.x+size.tile.target.w) {
-                    projected_left =  object.x - size.tile.target.w;
+                if (projected_right >= object.x && projected_right < (object.x + size.tile.target.w )) {
+                    projected_left = object.x - size.tile.target.w;
                     actor.speed.x = 0;
                     collides = true;
                 }
                 // check bounce left
-
-                //if (projected_left < object.x+size.tile.target.w && projected_right > object.x) {
-                //    projected_left =  object.x + size.tile.target.w;
-                //    actor.speed.x = 0;
-                //    collides = true;
-                //}
+                if (projected_left < ( object.x + size.tile.target.w ) && projected_left > object.x) {
+                    projected_left = object.x + size.tile.target.w;
+                    actor.speed.x = 0;
+                    collides = true;
+                }
             }
 
-            if ((collides == true && object.deadly == true) || (projected_top > size.canvas.h)){
+            if ((collides == true && object.deadly == true) || (projected_top > size.canvas.h)) {
                 gameOver();
             }
 
         })
 
         // move the player when the level is at it's border, else move the level
-        // todo: right level end
-         if (scroll_x <= 0) {
+        var level_w = levels[0].level[0].length * size.tile.target.w;
+        if (scroll_x <= 0) {
             actor.pos.x = projected_left;
-             if (projected_left > (size.canvas.w/2)){
-             scroll_x = 1;
-             }
+            if (projected_left > (size.canvas.w / 2)) {
+                scroll_x = 1;
+            }
+        } else if (scroll_x >= level_w - size.canvas.w){
+            scroll_x = level_w - size.canvas.w;
+            actor.pos.x = projected_left;
+            if (scroll_x + projected_left < level_w - (size.canvas.w / 2)) {
+                scroll_x = level_w - size.canvas.w - 1;
+            }
         } else {
             scroll_x += actor.speed.x;
         }
         actor.pos.y = projected_top;
+
+        // apply friction
+        if (actor.speed.y == 0) {
+            actor.speed.x *= speed.player.friction;
+        }
 
     });
 }
@@ -269,8 +290,8 @@ function drawControls() {
     var actor = actors[0];
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
-    ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h*2 );
-    ctx.strokeText("Objects: " + collisionMap.length, size.tile.target.w, size.tile.target.h*3 );
+    ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
+    ctx.strokeText("Objects: " + collisionMap.length, size.tile.target.w, size.tile.target.h * 3);
 }
 
 
@@ -297,7 +318,7 @@ function drawActors() {
 
 function gameOver() {
     // todo: dying animation
-    ctx.strokeText("Game Over", size.tile.target.w*5, size.tile.target.h*6 );
+    ctx.strokeText("Game Over", size.tile.target.w * 5, size.tile.target.h * 6);
     window.clearInterval(gameInterval);
 
 }
