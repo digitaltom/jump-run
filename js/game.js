@@ -4,6 +4,7 @@ var spriteMap = new Image;
 var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
+var items = [];
 
 var gameInterval;
 
@@ -11,6 +12,8 @@ var current_level;
 
 // position displayed level
 var scroll_x = 0;
+// scroll position at the beginning of the game loop
+var scroll_x_start = 0;
 
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
@@ -47,11 +50,23 @@ function $(id) {
     return document.getElementById(id);
 }
 
-function drawElements() {
+function drawLevel() {
 
     // clear the canvas before repainting
     ctx.clearRect(0, 0, size.canvas.w, size.canvas.h);
     collisionMap = [];
+
+    // cache tile sizes
+    var sw = size.tile.source.w;
+    var sh = size.tile.source.h;
+    var tw = size.tile.target.w;
+    var th = size.tile.target.h;
+
+
+    if (scroll_x < 0) {
+        scroll_x = 0;
+    }
+    scroll_x_start = scroll_x;
 
     current_level.level.forEach(function (linecontent, index_y) {
 
@@ -61,16 +76,7 @@ function drawElements() {
             // context.drawImage(img,x,y,width,height);
             // context.drawImage(img,sx,sy,swidth,sheight,dx,dy,dwidth,dheight);
 
-            // cache tile sizes
-            var sw = size.tile.source.w;
-            var sh = size.tile.source.h;
-            var tw = size.tile.target.w;
-            var th = size.tile.target.h;
 
-
-            if (scroll_x < 0) {
-                scroll_x = 0;
-            }
             // first tile to display:
             var index_x_start = scroll_x / size.tile.target.w
             var offset_x = scroll_x % size.tile.target.w
@@ -157,6 +163,7 @@ function drawElements() {
                     case '?':
                         object.sx = 0;
                         object.sy = 11;
+                        object.type = 'block_coin'
                         collisionMap.push(object);
                         break;
                     case 'q':
@@ -282,8 +289,13 @@ function updateCharacters() {
                 }
             }
 
-            if ((collides == true && object.deadly == true) || (projected_top > size.canvas.h)) {
-                gameOver();
+            if (collides == true) {
+                if (object.deadly == true) {
+                    gameOver();
+                }
+                if (object.type == 'block_coin' && projected_top == object.y + size.tile.target.h) {
+                    items.push({ sx:8, sy:9, x:scroll_x + object.x, y:(object.y-size.tile.target.h), deadly:false });
+                }
             }
 
         })
@@ -342,6 +354,10 @@ function updateElements() {
 
 }
 
+function updateCollisionMap() {
+
+}
+
 function drawControls() {
     var actor = actors[0];
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
@@ -352,9 +368,7 @@ function drawControls() {
 
 
 function drawActors() {
-
     actors.forEach(function (actor) {
-
         ctx.drawImage(
             actor.spriteMap,
             actor.sprite.x,
@@ -366,9 +380,25 @@ function drawActors() {
             size.tile.target.w,
             size.tile.target.h
         );
+    });
+}
+
+
+function drawElements() {
+    items.forEach(function (item) {
+        ctx.drawImage(
+            spriteMap,
+            item.sx * (size.tile.source.w+1) + 0.5,
+            item.sy * (size.tile.source.h+1) + 0.5,
+            size.tile.source.w - 0.8,
+            size.tile.source.h - 0.8,
+            item.x - scroll_x_start,
+            item.y,
+            size.tile.target.w,
+            size.tile.target.h
+        );
 
     });
-
 }
 
 
@@ -430,11 +460,17 @@ window.onkeyup = function (e) {
 
 function gameTick() {
     ticks++;
-    drawElements();
+
+    drawLevel();
+
+    // add visible items + actors to collision map
+    updateCollisionMap();
+
     updateCharacters();
     updateElements();
 
     drawActors();
+    drawElements();
     drawControls();
 }
 
@@ -454,6 +490,7 @@ function initGame() {
         size:{w:16, h:16},
         speed:{x:0, y:0}
     };
+
     player.spriteMap = new Image;
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
