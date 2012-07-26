@@ -1,9 +1,13 @@
 var ctx;
 var ticks = 0;
 var spriteMap = new Image;
+var itemMap = new Image;
+var enemyMap = new Image;
 var actors;
 
 var gameInterval;
+
+var current_level;
 
 // position displayed level
 var scroll_x = 0;
@@ -17,7 +21,7 @@ var speed = {
     player:{
         velocity_x:1.5,
         velocity_x_jump:1,
-        velocity_y:25.5,
+        velocity_y:25,
         gravity:2,
         friction:0.8,
         speed_limit_x:10,
@@ -49,7 +53,7 @@ function drawElements() {
     ctx.clearRect(0, 0, size.canvas.w, size.canvas.h);
     collisionMap = [];
 
-    levels[0].level.forEach(function (linecontent, index_y) {
+    current_level.level.forEach(function (linecontent, index_y) {
 
             // 5 free lines on top, 13 lines of level content
             index_y += 5;
@@ -76,6 +80,7 @@ function drawElements() {
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
                 var object = { sx:null, sy:null, x:((index_x - index_x_start) * tw) - offset_x, y:index_y * th, deadly:false };
+
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -99,9 +104,25 @@ function drawElements() {
                         object.sx = 1;
                         object.sy = 1;
                         break;
+                    case 'g':
+                        object.sx = 4;
+                        object.sy = 1;
+                        break;
                     case '`':
                         object.sx = 2;
                         object.sy = 1;
+                        break;
+                    case '{':
+                        object.sx = 2;
+                        object.sy = 0;
+                        break;
+                    case '=':
+                        object.sx = 3;
+                        object.sy = 0;
+                        break;
+                    case '}':
+                        object.sx = 4;
+                        object.sy = 0;
                         break;
                     case '@':
                         object.sx = 9;
@@ -133,10 +154,39 @@ function drawElements() {
                         object.sx = 2;
                         object.sy = 8;
                         break;
+                    case '?':
+                        object.sx = 0;
+                        object.sy = 11;
+                        collisionMap.push(object);
+                        break;
+                    case 'q':
+                        object.sx = 0;
+                        object.sy = 2;
+                        collisionMap.push(object);
+                        break;
+                    case 'w':
+                        object.sx = 1;
+                        object.sy = 2;
+                        collisionMap.push(object);
+                        break;
+                    case 'a':
+                        object.sx = 0;
+                        object.sy = 3;
+                        collisionMap.push(object);
+                        break;
+                    case 's':
+                        object.sx = 1;
+                        object.sy = 3;
+                        collisionMap.push(object);
+                        break;
+                    case 'b':
+                        object.sx = 13;
+                        object.sy = 4;
+                        break;
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1), object.sy * (sh + 1), sw - 1, sh, object.x, object.y, tw, th);
+                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x, object.y, tw, th);
                 }
             }
 
@@ -170,25 +220,7 @@ function updateCharacters() {
             // this only causes a duck animation, nothing happens in term of speed
         }
 
-
-        // player animation
-        if (actor.speed.x > 0) {
-            actor.sprite.y = 16;
-        } else if (actor.speed.x < 0) {
-            actor.sprite.y = 48;
-        }
-
-        if (actor.speed.y != 0) {
-            actor.sprite.x = 85;
-        } else {
-            if (actor.speed.x == 0) {
-                actor.sprite.x = 0;
-            } else if (actor.sprite.x >= 48) {
-                actor.sprite.x = 16;
-            } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
-                actor.sprite.x += 16;
-            }
-        }
+        animate_actor(actor);
 
         // apply gravity.
         actor.speed.y += speed.player.gravity;
@@ -257,13 +289,13 @@ function updateCharacters() {
         })
 
         // move the player when the level is at it's border, else move the level
-        var level_w = levels[0].level[0].length * size.tile.target.w;
+        var level_w = current_level.level[0].length * size.tile.target.w;
         if (scroll_x <= 0) {
             actor.pos.x = projected_left;
             if (projected_left > (size.canvas.w / 2)) {
                 scroll_x = 1;
             }
-        } else if (scroll_x >= level_w - size.canvas.w){
+        } else if (scroll_x >= level_w - size.canvas.w) {
             scroll_x = level_w - size.canvas.w;
             actor.pos.x = projected_left;
             if (scroll_x + projected_left < level_w - (size.canvas.w / 2)) {
@@ -280,6 +312,30 @@ function updateCharacters() {
         }
 
     });
+}
+
+
+function animate_actor(actor) {
+    if (actor.speed.x > 0) {
+        actor.sprite.y = 16;
+    } else if (actor.speed.x < 0) {
+        actor.sprite.y = 48;
+    }
+
+    if (actor.speed.y != 0) {
+        actor.sprite.x = 85;
+    } else {
+        if (actor.speed.x == 0) {
+            actor.sprite.x = 0;
+        } else if (actor.sprite.x >= 48) {
+            actor.sprite.x = 16;
+        } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
+            actor.sprite.x += 16;
+        }
+    }
+    if (held.down) {
+        // todo: ducken
+    }
 }
 
 function updateElements() {
@@ -389,6 +445,8 @@ function initGame() {
     ctx = canvas.getContext("2d");
 
     spriteMap.src = 'images/smb_tiles.png';
+    itemMap.src = 'images/smb_items_sheet.png';
+    enemyMap.src = 'images/smb_enemies_sheet.png';
 
     player = {
         pos:{x:size.tile.target.w, y:10 * size.tile.target.h},
@@ -399,6 +457,8 @@ function initGame() {
     player.spriteMap = new Image;
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
+
+    current_level = levels[2];
 
     gameInterval = setInterval(gameTick, 1000 / 30);
 }

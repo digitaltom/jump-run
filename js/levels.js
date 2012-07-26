@@ -35,5 +35,23 @@ var levels = [
             "xxxxxxxxxxx@@@@@@@@@@@@@@@@@@@@@@xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         ]
     },
+    {
+        name:"Mario Level 1",
+        level:[
+            "      13           13      1223                           ",
+            "      46           46      4556                           ",
+            "                                                          ",
+            "                                                          ",
+            "                        ?                                 ",
+            "                                                          ",
+            "                                                          ",
+            "                                                          ",
+            "                ?     #?#?#                               ",
+            "    ^                                                     ",
+            "   /ü`            ^              qw                x@x    ",
+            "  /ügü`      {=} /ü`             as                xbx    ",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbxxxxx"
+        ]
+    },
     {}
 ];
