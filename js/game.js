@@ -317,7 +317,15 @@ function updateCharacters() {
                     items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), deadly:false, type:'coin' });
                 }
             }
-            if (collides.top || collides.bottom || collides.right || collides.left) {
+            if (collides.bottom) {
+                if (object.type == 'enemy_mushroom') {
+                    items.splice(items.indexOf(object), 1);
+                    object.deadly = false
+                    object.speed = 0
+                    score++;
+                }
+            }
+            if (object && (collides.top || collides.bottom || collides.right || collides.left)) {
                 if (object.deadly == true) {
                     gameOver();
                 }
@@ -438,13 +446,12 @@ function updateElements() {
             }
             // move
             if (item.speed > 0) {
-                if (getLevelSpriteXY(item.x + size.tile.target.w, item.y) != " ") {
-                    item.speed *= -1
-                }
+                sprite_collide = getLevelSpriteXY(item.x + size.tile.target.w, item.y)
             } else {
-                if (getLevelSpriteXY(item.x, item.y) != " ") {
-                    item.speed *= -1
-                }
+                sprite_collide = getLevelSpriteXY(item.x, item.y)
+            }
+            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#") {
+                item.speed *= -1
             }
             item.x += item.speed
         }

@@ -41,7 +41,7 @@ var levels = [
             "      13           13      1223                                              13                                                                                        ",
             "      46           46      4556           13                  13             46      1223                                13                  ",
             "                                          46                  46                     4556                                46                      1223 ",
-            "                                                                                                                                                 4556    ",
+            "                                                                                               p p                                               4556    ",
             "                        ?                                                                  #########     #####?                               ###     #??#  ",
             "                                                                                                                                                           ",
             "                                                                                                                                               ",
@@ -49,8 +49,8 @@ var levels = [
             "                ?     #?#?#                       qw          qw                     #?#                      #        #k     ?  ?  ?      #           ##            ",
             "    ^                                     qw      as    ^     as                                                 ^                                           ",
             "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                       ",
-            "  /ügü`      {=} /ü`             as    p  as  {=} as  /ügü`   as  {==} /ü`      {=}                  {=}       /ügü`           {==}   /ü`     /`                          ",
-            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxhhxxxxxxxxxxxxxxxxxhhhhhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                          "
+            "  /ügü`      {=} /ü`  p          as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`                          ",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxxhhhhhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                          "
         ]
     },
     {}
