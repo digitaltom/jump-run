@@ -235,7 +235,7 @@ function drawLevel() {
                         object.sy = 12;
                         object.deadly = true;
                         object.type = "enemy_mushroom"
-                        object.speed = 4
+                        object.speed_x = 4
                         items.push(object);
                         replaceLevelSprite(index_x, index_y - line_offset_y, " ");
                         break;
@@ -319,9 +319,9 @@ function updateCharacters() {
             }
             if (collides.bottom) {
                 if (object.type == 'enemy_mushroom') {
-                    items.splice(items.indexOf(object), 1);
                     object.deadly = false
                     object.speed = 0
+                    object.sx = 2
                     score++;
                 }
             }
@@ -440,20 +440,26 @@ function updateElements() {
                 // animate
                 if (item.sx == 0) {
                     item.sx = 1;
-                } else {
+                } else if (item.sx == 1) {
                     item.sx = 0;
+                } else if (item.sx == 2) {
+                   items.splice(items.indexOf(item), 1);
                 }
             }
             // move
-            if (item.speed > 0) {
+            if (item.speed_x > 0) {
                 sprite_collide = getLevelSpriteXY(item.x + size.tile.target.w, item.y)
             } else {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
+            sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w/2, item.y + size.tile.target.h)
             if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#") {
-                item.speed *= -1
+                item.speed_x *= -1
             }
-            item.x += item.speed
+            if (sprite_bottom != "x" && sprite_bottom != "#") {
+                item.speed_x *= -1
+            }
+            item.x += item.speed_x
         }
     })
 
