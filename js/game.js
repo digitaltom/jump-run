@@ -9,11 +9,14 @@ var items = [];
 var gameInterval;
 
 var current_level;
+var score = 0
 
 // position displayed level
 var scroll_x = 120;
 // scroll position at the beginning of the game loop
 var scroll_x_start = 0;
+// 5 free lines on top, 13 lines of level content
+var line_offset_y = 5;
 
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
@@ -29,7 +32,8 @@ var speed = {
         friction:0.8,
         speed_limit_x:10,
         speed_limit_y:25
-    }
+    },
+    fps: 30
 }
 
 // size details about various aspects of the game
@@ -49,6 +53,16 @@ var size = {
 function $(id) {
     return document.getElementById(id);
 }
+
+String.prototype.replaceAt = function (index, char) {
+    return this.substr(0, index) + char + this.substr(index + char.length);
+}
+
+function replaceLevelSprite(x, y, item) {
+    line_nr = y / size.tile.target.h - line_offset_y
+    current_level.level[line_nr] = current_level.level[line_nr].replaceAt(x / size.tile.target.w, item);
+}
+
 
 function drawLevel() {
 
@@ -70,12 +84,10 @@ function drawLevel() {
 
     current_level.level.forEach(function (linecontent, index_y) {
 
-            // 5 free lines on top, 13 lines of level content
-            index_y += 5;
+            index_y += line_offset_y;
 
             // context.drawImage(img,x,y,width,height);
             // context.drawImage(img,sx,sy,swidth,sheight,dx,dy,dwidth,dheight);
-
 
             // first tile to display:
             var index_x_start = scroll_x / size.tile.target.w
@@ -85,8 +97,7 @@ function drawLevel() {
 
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
-                var object = { sx:null, sy:null, x:((index_x) * tw) - offset_x, y:index_y * th, deadly:false };
-
+                var object = { sx:null, sy:null, x:((index_x) * tw) - offset_x, y:index_y * th, deadly:false, solid:true };
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -166,6 +177,11 @@ function drawLevel() {
                         object.type = 'block_coin'
                         collisionMap.push(object);
                         break;
+                    case 'ß':
+                        object.sx = 1;
+                        object.sy = 11;
+                        collisionMap.push(object);
+                        break;
                     case 'q':
                         object.sx = 0;
                         object.sy = 2;
@@ -202,6 +218,7 @@ function drawLevel() {
     );
 
 }
+
 
 // update position of characters, collision detection
 function updateCharacters() {
@@ -256,29 +273,10 @@ function updateCharacters() {
 
             var collides = checkCollision(actor, object);
 
-            if (collides.top) {
-                actor.pos.y = object.y + size.tile.target.h;
-                actor.speed.y = 1;
-                // intentionally skip right/left bounce
-                collides.right = false;
-                collides.left = false;
-            } else if (collides.bottom) {
-                actor.pos.y = object.y - size.tile.target.h;
-                actor.speed.y = 0;
-            }
-            if (collides.right) {
-                actor.pos.x = object.x - size.tile.target.w;
-                actor.speed.x = 0;
-            } else if (collides.left) {
-                actor.pos.x = object.x + size.tile.target.w;
-                actor.speed.x = 0;
-            }
-
-
-
-            // act on collisions
+            // special actions on collisions
             if (collides.top) {
                 if (object.type == 'block_coin') {
+                    replaceLevelSprite(object.x, object.y, "ß");
                     items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), deadly:false, type:'coin' });
                 }
             }
@@ -287,12 +285,31 @@ function updateCharacters() {
                     gameOver();
                 }
                 if (object.type == 'coin') {
-                    //alert('x');
-                    //object = null;
+                    items.splice(items.indexOf(object), 1);
+                    score++;
                 }
             }
 
-
+            // apply collision to player movement
+            if (object && object.solid) {
+                if (collides.top) {
+                    actor.pos.y = object.y + size.tile.target.h;
+                    actor.speed.y = 1;
+                    // intentionally skip right/left bounce
+                    collides.right = false;
+                    collides.left = false;
+                } else if (collides.bottom) {
+                    actor.pos.y = object.y - size.tile.target.h;
+                    actor.speed.y = 0;
+                }
+                if (collides.right) {
+                    actor.pos.x = object.x - size.tile.target.w;
+                    actor.speed.x = 0;
+                } else if (collides.left) {
+                    actor.pos.x = object.x + size.tile.target.w;
+                    actor.speed.x = 0;
+                }
+            }
         })
 
         // move the player when the level is at it's border, else move the level
@@ -331,7 +348,7 @@ function checkCollision(actor, object) {
         }
     }
     // we are right or left of an object
-    if ((actor.pos.y > object.y) && (actor.pos.y < (object.y + size.tile.target.h) )) {
+    if ((actor.pos.y >= object.y) && (actor.pos.y <= (object.y + size.tile.target.h) )) {
         // check bounce right
         if (actor.pos.x + size.tile.target.w >= object.x && actor.pos.x + size.tile.target.w < (object.x + size.tile.target.w )) {
             collides.right = true;
@@ -382,7 +399,9 @@ function drawControls() {
     ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
     ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
-    ctx.strokeText("Objects: " + collisionMap.length, size.tile.target.w, size.tile.target.h * 3);
+    ctx.strokeText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
+
+    ctx.strokeText("Coins: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
 
 
@@ -527,7 +546,7 @@ function initGame() {
 
     initializeLevel(levels[2]);
 
-    gameInterval = setInterval(gameLoop, 1000 / 30);
+    gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
 
 
