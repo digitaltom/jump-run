@@ -11,7 +11,7 @@ var gameInterval;
 var current_level;
 
 // position displayed level
-var scroll_x = 0;
+var scroll_x = 120;
 // scroll position at the beginning of the game loop
 var scroll_x_start = 0;
 
@@ -85,7 +85,7 @@ function drawLevel() {
 
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
-                var object = { sx:null, sy:null, x:((index_x - index_x_start) * tw) - offset_x, y:index_y * th, deadly:false };
+                var object = { sx:null, sy:null, x:((index_x) * tw) - offset_x, y:index_y * th, deadly:false };
 
                 switch (linecontent.charAt(index_x)) {
                     case '#':
@@ -193,7 +193,7 @@ function drawLevel() {
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x, object.y, tw, th);
+                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start*tw, object.y, tw, th);
                 }
             }
 
@@ -251,12 +251,11 @@ function updateCharacters() {
         // block on level edge
         if (projected_left < 0) {
             projected_left = 0;
-        } else if (projected_right > size.canvas.w) {
-            projected_left = size.canvas.w - size.tile.target.w;
+        } else if (projected_right > current_level.width) {
+            projected_left = current_level.width - size.tile.target.w;
         }
 
         collisionMap.forEach(function (object) {
-            //collisionMap.every(function (object) {
             var collides = false;
 
             // we are below or above an object
@@ -292,29 +291,31 @@ function updateCharacters() {
             if (collides == true) {
                 if (object.deadly == true) {
                     gameOver();
-                }
-                if (object.type == 'block_coin' && projected_top == object.y + size.tile.target.h) {
-                    items.push({ sx:8, sy:9, x:scroll_x + object.x, y:(object.y-size.tile.target.h), deadly:false });
+                } else if (object.type == 'block_coin' && projected_top == object.y + size.tile.target.h) {
+                    items.push({ sx:8, sy:9, x:object.x, y:(object.y-size.tile.target.h), deadly:false, type: 'coin' });
+                } else if (object.type == 'coin') {
+                    //alert('x');
+                    //object = null;
                 }
             }
 
         })
 
         // move the player when the level is at it's border, else move the level
-        var level_w = current_level.level[0].length * size.tile.target.w;
         if (scroll_x <= 0) {
             actor.pos.x = projected_left;
             if (projected_left > (size.canvas.w / 2)) {
                 scroll_x = 1;
             }
-        } else if (scroll_x >= level_w - size.canvas.w) {
-            scroll_x = level_w - size.canvas.w;
+        } else if (scroll_x >= current_level.width - size.canvas.w) {
+            scroll_x = current_level.width - size.canvas.w;
             actor.pos.x = projected_left;
-            if (scroll_x + projected_left < level_w - (size.canvas.w / 2)) {
-                scroll_x = level_w - size.canvas.w - 1;
+            if (projected_left < current_level.width - (size.canvas.w / 2)) {
+                scroll_x = current_level.width - size.canvas.w - 1;
             }
         } else {
             scroll_x += actor.speed.x;
+            actor.pos.x += actor.speed.x;
         }
         actor.pos.y = projected_top;
 
@@ -355,7 +356,8 @@ function updateElements() {
 }
 
 function updateCollisionMap() {
-
+    // add items to collision check, todo: only add visible items
+    collisionMap = collisionMap.concat(items);
 }
 
 function drawControls() {
@@ -375,7 +377,7 @@ function drawActors() {
             actor.sprite.y,
             actor.size.w,
             actor.size.h,
-            actor.pos.x,
+            actor.pos.x - scroll_x_start,
             actor.pos.y,
             size.tile.target.w,
             size.tile.target.h
@@ -407,6 +409,12 @@ function gameOver() {
     ctx.strokeText("Game Over", size.tile.target.w * 5, size.tile.target.h * 6);
     window.clearInterval(gameInterval);
 
+}
+
+
+function initializeLevel(level){
+    current_level = level;
+    level.width = level.level[0].length * size.tile.target.w;
 }
 
 
@@ -458,7 +466,7 @@ window.onkeyup = function (e) {
 };
 
 
-function gameTick() {
+function gameLoop() {
     ticks++;
 
     drawLevel();
@@ -490,7 +498,7 @@ function initGame() {
     enemyMap.src = 'images/smb_enemies_sheet.png';
 
     player = {
-        pos:{x:size.tile.target.w, y:10 * size.tile.target.h},
+        pos:{x:25 * size.tile.target.w, y:10 * size.tile.target.h},
         sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}
@@ -500,9 +508,9 @@ function initGame() {
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
 
-    current_level = levels[2];
+    initializeLevel(levels[2]);
 
-    gameInterval = setInterval(gameTick, 1000 / 30);
+    gameInterval = setInterval(gameLoop, 1000 / 30);
 }
 
 
