@@ -109,6 +109,18 @@ function drawLevel() {
                         object.sy = 0;
                         collisionMap.push(object);
                         break;
+                    case 'k':
+                        object.sx = 6;
+                        object.sy = 0;
+                        collisionMap.push(object);
+                        break;
+                    case 'h':
+                        object.sx = 12;
+                        object.sy = 6;
+                        object.deadly = true;
+                        object.solid = false;
+                        collisionMap.push(object);
+                        break;
                     case '/':
                         object.sx = 0;
                         object.sy = 1;
