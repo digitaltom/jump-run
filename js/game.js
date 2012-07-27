@@ -193,7 +193,7 @@ function drawLevel() {
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start*tw, object.y, tw, th);
+                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start * tw, object.y, tw, th);
                 }
             }
 
@@ -242,82 +242,72 @@ function updateCharacters() {
             actor.speed.y = speed.player.speed_limit_y * actor.speed.y / Math.abs(actor.speed.y)
         }
 
-        var projected_left = actor.pos.x + actor.speed.x;
-        var projected_top = actor.pos.y + actor.speed.y;
-        var projected_bottom = projected_top + size.tile.target.h
-        var projected_right = projected_left + size.tile.target.w
-
+        actor.pos.x += actor.speed.x;
+        actor.pos.y += actor.speed.y;
 
         // block on level edge
-        if (projected_left < 0) {
-            projected_left = 0;
-        } else if (projected_right > current_level.width) {
-            projected_left = current_level.width - size.tile.target.w;
+        if (actor.pos.x < 0) {
+            actor.pos.x = 0;
+        } else if (actor.pos.x + size.tile.target.w > current_level.width) {
+            actor.pos.x = current_level.width - size.tile.target.w;
         }
 
         collisionMap.forEach(function (object) {
-            var collides = false;
 
-            // we are below or above an object
-            if (projected_right >= (object.x + size.tile.target.w * 0.3) && projected_left <= object.x + size.tile.target.w * 0.7) {
-                // check bounce bottom:
-                if (projected_bottom >= object.y && projected_top < object.y) {
-                    projected_top = object.y - size.tile.target.h;
-                    actor.speed.y = 0;
-                    collides = true;
-                    // check bounce top:
-                } else if (projected_top <= (object.y + size.tile.target.h) && projected_top > object.y) {
-                    projected_top = object.y + size.tile.target.h;
-                    actor.speed.y = 1;
-                    collides = true;
-                }
+            var collides = checkCollision(actor, object);
+
+            if (collides.top) {
+                actor.pos.y = object.y + size.tile.target.h;
+                actor.speed.y = 1;
+                // intentionally skip right/left bounce
+                collides.right = false;
+                collides.left = false;
+            } else if (collides.bottom) {
+                actor.pos.y = object.y - size.tile.target.h;
+                actor.speed.y = 0;
             }
-            // we are right or left of an object
-            if ((projected_top > object.y) && (projected_top < (object.y + size.tile.target.h) )) {
-                // check bounce right
-                if (projected_right >= object.x && projected_right < (object.x + size.tile.target.w )) {
-                    projected_left = object.x - size.tile.target.w;
-                    actor.speed.x = 0;
-                    collides = true;
-                }
-                // check bounce left
-                if (projected_left < ( object.x + size.tile.target.w ) && projected_left > object.x) {
-                    projected_left = object.x + size.tile.target.w;
-                    actor.speed.x = 0;
-                    collides = true;
-                }
+            if (collides.right) {
+                actor.pos.x = object.x - size.tile.target.w;
+                actor.speed.x = 0;
+            } else if (collides.left) {
+                actor.pos.x = object.x + size.tile.target.w;
+                actor.speed.x = 0;
             }
 
-            if (collides == true) {
+
+
+            // act on collisions
+            if (collides.top) {
+                if (object.type == 'block_coin') {
+                    items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), deadly:false, type:'coin' });
+                }
+            }
+            if (collides.top || collides.bottom || collides.right || collides.left) {
                 if (object.deadly == true) {
                     gameOver();
-                } else if (object.type == 'block_coin' && projected_top == object.y + size.tile.target.h) {
-                    items.push({ sx:8, sy:9, x:object.x, y:(object.y-size.tile.target.h), deadly:false, type: 'coin' });
-                } else if (object.type == 'coin') {
+                }
+                if (object.type == 'coin') {
                     //alert('x');
                     //object = null;
                 }
             }
 
+
         })
 
         // move the player when the level is at it's border, else move the level
         if (scroll_x <= 0) {
-            actor.pos.x = projected_left;
-            if (projected_left > (size.canvas.w / 2)) {
+            if (actor.pos.x > (size.canvas.w / 2)) {
                 scroll_x = 1;
             }
         } else if (scroll_x >= current_level.width - size.canvas.w) {
             scroll_x = current_level.width - size.canvas.w;
-            actor.pos.x = projected_left;
-            if (projected_left < current_level.width - (size.canvas.w / 2)) {
+            if (actor.pos.x < current_level.width - (size.canvas.w / 2)) {
                 scroll_x = current_level.width - size.canvas.w - 1;
             }
         } else {
             scroll_x += actor.speed.x;
-            actor.pos.x += actor.speed.x;
         }
-        actor.pos.y = projected_top;
 
         // apply friction
         if (actor.speed.y == 0) {
@@ -325,6 +315,33 @@ function updateCharacters() {
         }
 
     });
+}
+
+
+function checkCollision(actor, object) {
+    var collides = {top:false, bottom:false, left:false, right:false};
+    // we are below or above an object
+    if (actor.pos.x + size.tile.target.w >= (object.x + size.tile.target.w * 0.3) && actor.pos.x <= object.x + size.tile.target.w * 0.7) {
+        // check bounce bottom:
+        if (actor.pos.y + size.tile.target.h >= object.y && actor.pos.y < object.y) {
+            collides.bottom = true;
+            // check bounce top:
+        } else if (actor.pos.y <= (object.y + size.tile.target.h) && actor.pos.y > object.y) {
+            collides.top = true;
+        }
+    }
+    // we are right or left of an object
+    if ((actor.pos.y > object.y) && (actor.pos.y < (object.y + size.tile.target.h) )) {
+        // check bounce right
+        if (actor.pos.x + size.tile.target.w >= object.x && actor.pos.x + size.tile.target.w < (object.x + size.tile.target.w )) {
+            collides.right = true;
+        }
+        // check bounce left
+        if (actor.pos.x < ( object.x + size.tile.target.w ) && actor.pos.x > object.x) {
+            collides.left = true;
+        }
+    }
+    return collides;
 }
 
 
@@ -390,8 +407,8 @@ function drawElements() {
     items.forEach(function (item) {
         ctx.drawImage(
             spriteMap,
-            item.sx * (size.tile.source.w+1) + 0.5,
-            item.sy * (size.tile.source.h+1) + 0.5,
+            item.sx * (size.tile.source.w + 1) + 0.5,
+            item.sy * (size.tile.source.h + 1) + 0.5,
             size.tile.source.w - 0.8,
             size.tile.source.h - 0.8,
             item.x - scroll_x_start,
@@ -412,7 +429,7 @@ function gameOver() {
 }
 
 
-function initializeLevel(level){
+function initializeLevel(level) {
     current_level = level;
     level.width = level.level[0].length * size.tile.target.w;
 }
