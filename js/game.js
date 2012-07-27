@@ -40,9 +40,9 @@ var size = {
     },
     tiles:{ // number of tiles
         source:{w:13, h:11},
-        target:{w:18, h:18}
+        target:{w:1, h:1} // this is set dynamically depending on the canvas size
     },
-    canvas:{w:576, h:576}
+    canvas:{w:1, h:1} // the canvas size is read from the actual html
 };
 
 
@@ -203,7 +203,7 @@ function drawLevel() {
 
 }
 
-
+// update position of characters, collision detection
 function updateCharacters() {
 
     actors.forEach(function (actor) {
@@ -479,6 +479,11 @@ function initGame() {
 
     var canvas = $("game");
     ctx = canvas.getContext("2d");
+
+    size.canvas.w = canvas.offsetWidth;
+    size.canvas.h = canvas.offsetHeight;
+    size.tiles.target.w = size.canvas.w / size.tile.target.w
+    size.tiles.target.h = size.canvas.h / size.tile.target.h
 
     spriteMap.src = 'images/smb_tiles.png';
     itemMap.src = 'images/smb_items_sheet.png';
