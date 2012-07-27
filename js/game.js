@@ -12,7 +12,7 @@ var current_level;
 var score = 0
 
 // position displayed level
-var scroll_x = 120;
+var scroll_x = 0;
 // scroll position at the beginning of the game loop
 var scroll_x_start = 0;
 // 5 free lines on top, 13 lines of level content
@@ -33,7 +33,7 @@ var speed = {
         speed_limit_x:10,
         speed_limit_y:25
     },
-    fps: 30
+    fps:30
 }
 
 // size details about various aspects of the game
@@ -58,11 +58,23 @@ String.prototype.replaceAt = function (index, char) {
     return this.substr(0, index) + char + this.substr(index + char.length);
 }
 
-function replaceLevelSprite(x, y, item) {
+function replaceLevelSpriteXY(x, y, item) {
     line_nr = y / size.tile.target.h - line_offset_y
-    current_level.level[line_nr] = current_level.level[line_nr].replaceAt(x / size.tile.target.w, item);
+    replaceLevelSprite(x / size.tile.target.w, line_nr, item)
 }
 
+function replaceLevelSprite(pos, line, item) {
+    current_level.level[line] = current_level.level[line].replaceAt(pos, item);
+}
+
+function getLevelSpriteXY(x, y) {
+    line_nr = y / size.tile.target.h - line_offset_y;
+    return getLevelSprite(x / size.tile.target.w, line_nr);
+}
+
+function getLevelSprite(pos, line) {
+    return current_level.level[line].charAt(pos);
+}
 
 function drawLevel() {
 
@@ -218,6 +230,15 @@ function drawLevel() {
                         object.sx = 13;
                         object.sy = 4;
                         break;
+                    case 'p':
+                        object.sx = 0;
+                        object.sy = 12;
+                        object.deadly = true;
+                        object.type = "enemy_mushroom"
+                        object.speed = 4
+                        items.push(object);
+                        replaceLevelSprite(index_x, index_y - line_offset_y, " ");
+                        break;
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
@@ -281,6 +302,10 @@ function updateCharacters() {
             actor.pos.x = current_level.width - size.tile.target.w;
         }
 
+        // add visible items + actors to collision check
+        // todo: only add visible items
+        collisionMap = collisionMap.concat(items);
+
         collisionMap.forEach(function (object) {
 
             var collides = checkCollision(actor, object);
@@ -288,7 +313,7 @@ function updateCharacters() {
             // special actions on collisions
             if (collides.top) {
                 if (object.type == 'block_coin') {
-                    replaceLevelSprite(object.x, object.y, "ß");
+                    replaceLevelSpriteXY(object.x, object.y, "ß");
                     items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), deadly:false, type:'coin' });
                 }
             }
@@ -397,14 +422,36 @@ function animate_actor(actor) {
     }
 }
 
+// update special items, enemies
 function updateElements() {
+    items.forEach(function (item) {
+
+        if (item.type == 'enemy_mushroom') {
+            // animate
+            if (ticks % 4 == 0) {
+                // animate
+                if (item.sx == 0) {
+                    item.sx = 1;
+                } else {
+                    item.sx = 0;
+                }
+            }
+            // move
+            if (item.speed > 0) {
+                if (getLevelSpriteXY(item.x + size.tile.target.w, item.y) != " ") {
+                    item.speed *= -1
+                }
+            } else {
+                if (getLevelSpriteXY(item.x, item.y) != " ") {
+                    item.speed *= -1
+                }
+            }
+            item.x += item.speed
+        }
+    })
 
 }
 
-function updateCollisionMap() {
-    // add items to collision check, todo: only add visible items
-    collisionMap = collisionMap.concat(items);
-}
 
 function drawControls() {
     var actor = actors[0];
@@ -519,9 +566,6 @@ function gameLoop() {
 
     drawLevel();
 
-    // add visible items + actors to collision map
-    updateCollisionMap();
-
     updateCharacters();
     updateElements();
 
@@ -546,7 +590,7 @@ function initGame() {
     enemyMap.src = 'images/smb_enemies_sheet.png';
 
     player = {
-        pos:{x:25 * size.tile.target.w, y:10 * size.tile.target.h},
+        pos:{x:5 * size.tile.target.w, y:10 * size.tile.target.h},
         sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}

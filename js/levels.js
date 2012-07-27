@@ -49,7 +49,7 @@ var levels = [
             "                ?     #?#?#                       qw          qw                     #?#                      #        #k     ?  ?  ?      #           ##            ",
             "    ^                                     qw      as    ^     as                                                 ^                                           ",
             "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                       ",
-            "  /ügü`      {=} /ü`             as       as  {=} as  /ügü`   as  {==} /ü`      {=}                  {=}       /ügü`           {==}   /ü`     /`                          ",
+            "  /ügü`      {=} /ü`             as    p  as  {=} as  /ügü`   as  {==} /ü`      {=}                  {=}       /ügü`           {==}   /ü`     /`                          ",
             "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxhhxxxxxxxxxxxxxxxxxhhhhhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                          "
         ]
     },
