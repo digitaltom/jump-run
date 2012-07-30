@@ -43,7 +43,6 @@ var size = {
         target:{w:32, h:32}
     },
     tiles:{ // number of tiles
-        source:{w:13, h:11},
         target:{w:1, h:1} // this is set dynamically depending on the canvas size
     },
     canvas:{w:1, h:1} // the canvas size is read from the actual html
@@ -121,7 +120,12 @@ function drawLevel() {
                         object.sy = 0;
                         collisionMap.push(object);
                         break;
-                    case 'k':
+                    case 'H':
+                        object.sx = 2;
+                        object.sy = 2;
+                        collisionMap.push(object);
+                        break;
+		    case 'k':
                         object.sx = 6;
                         object.sy = 0;
                         collisionMap.push(object);
@@ -239,7 +243,57 @@ function drawLevel() {
                         items.push(object);
                         replaceLevelSprite(index_x, index_y - line_offset_y, " ");
                         break;
-                    default:
+                    case '\'':
+                        object.sx = 2;
+                        object.sy = 3;
+                        break;
+                    case '°':
+                        object.sx = 3;
+                        object.sy = 2;
+                        break;
+                    case 'R':
+                        object.sx = 3;
+                        object.sy = 3;
+                        break;
+                    case '|':
+                        object.sx = 3;
+                        object.sy = 4;
+                        break;
+                    case '*':
+                        object.sx = 1;
+                        object.sy = 4;
+                        break;
+                    case 'W':
+                        object.sx = 0;
+                        object.sy = 4;
+                        break;
+                    case 'U':
+                        object.sx = 2;
+                        object.sy = 6;
+                        break;
+                    case 'B':
+                        object.sx = 1;
+                        object.sy = 6;
+			object.type = 'exit'
+			collisionMap.push(object);
+                        break;
+                    case 'O':
+                        object.sx = 1;
+                        object.sy = 5;
+                        break;
+                    case 'X':
+                        object.sx = 2;
+                        object.sy = 4;
+                        break;
+                    case 'l':
+                        object.sx = 0;
+                        object.sy = 5;
+                        break;
+                    case 'j':
+                        object.sx = 2;
+                        object.sy = 5;
+                        break;
+		    default:
                 }
                 if (object.sx != null && object.sy != null) {
                     ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start * tw, object.y, tw, th);
@@ -327,8 +381,12 @@ function updateCharacters() {
             }
             if (object && (collides.top || collides.bottom || collides.right || collides.left)) {
                 if (object.deadly == true) {
+		    //items.push({ sx:, sy:9, x:actor.pos.x, y:actor.pos.y, deadly:false, type:'looser' });
                     gameOver();
                 }
+                if (object.type == 'exit') {
+                    levelWin();
+                }                
                 if (object.type == 'coin') {
                     items.splice(items.indexOf(object), 1);
                     score++;
@@ -453,10 +511,10 @@ function updateElements() {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w/2, item.y + size.tile.target.h)
-            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#") {
+            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H") {
                 item.speed_x *= -1
             }
-            if (sprite_bottom != "x" && sprite_bottom != "#") {
+            if (sprite_bottom != "x" && sprite_bottom != "#" && sprite_bottom != "?" && sprite_bottom != "ß") {
                 item.speed_x *= -1
             }
             item.x += item.speed_x
@@ -473,7 +531,7 @@ function drawControls() {
     ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
     ctx.strokeText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
 
-    ctx.strokeText("Coins: : " + score, size.canvas.w - 100, size.tile.target.h);
+    ctx.strokeText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
 
 
@@ -516,9 +574,13 @@ function gameOver() {
     // todo: dying animation
     ctx.strokeText("Game Over", size.tile.target.w * 5, size.tile.target.h * 6);
     window.clearInterval(gameInterval);
-
 }
 
+function levelWin() {
+    // todo:  winning animation
+    ctx.strokeText("Level done!", size.tile.target.w * 5, size.tile.target.h * 6);
+    window.clearInterval(gameInterval);
+}
 
 function initializeLevel(level) {
     current_level = level;
@@ -546,10 +608,9 @@ window.onkeydown = function (e) {
         default:
             return;
     }
-    return false; // cancel regular key
+    return false;
 };
 
-// of course we now also need to register keyup
 window.onkeyup = function (e) {
     switch (e.keyCode) {
         case 37: // left
@@ -570,7 +631,7 @@ window.onkeyup = function (e) {
         default:
             return;
     }
-    return false; // cancel regular key
+    return false; 
 };
 
 
@@ -603,11 +664,12 @@ function initGame() {
     enemyMap.src = 'images/smb_enemies_sheet.png';
 
     player = {
-        pos:{x:5 * size.tile.target.w, y:10 * size.tile.target.h},
+        pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
         sprite:{x:0, y:16},
         size:{w:16, h:16},
         speed:{x:0, y:0}
     };
+    scroll_x = player.pos.x - size.canvas.w/2
 
     player.spriteMap = new Image;
     player.spriteMap.src = 'images/mario_sprites.png';
