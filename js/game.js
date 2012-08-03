@@ -578,8 +578,15 @@ function levelWin() {
     window.clearInterval(gameInterval);
 }
 
+function restartGame() {
+    window.clearInterval(gameInterval);
+    initGame();
+}
+
 function initializeLevel(level) {
     current_level = level;
+    // clone the level content so we still have the original for a restart
+    level.level = level.template.slice(0)
     level.width = level.level[0].length * size.tile.target.w;
 }
 
