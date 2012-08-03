@@ -655,6 +655,13 @@ function initGame() {
     size.tiles.target.w = size.canvas.w / size.tile.target.w
     size.tiles.target.h = size.canvas.h / size.tile.target.h
 
+    initializeLevel(levels[2]);
+
+    // if the canvas is not high enough, cut from the upper side
+    if (size.canvas.h / size.tile.target.h < current_level.level.length + line_offset_y) {
+        line_offset_y =  size.canvas.h / size.tile.target.h - current_level.level.length
+    }
+
     spriteMap.src = 'images/smb_tiles.png';
     itemMap.src = 'images/smb_items_sheet.png';
     enemyMap.src = 'images/smb_enemies_sheet.png';
@@ -670,8 +677,6 @@ function initGame() {
     player.spriteMap = new Image;
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
-
-    initializeLevel(levels[2]);
 
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
