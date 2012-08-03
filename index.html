@@ -17,5 +17,14 @@
 <script type="text/javascript" src="js/levels.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/game.js" charset="utf-8"></script>
 
+<div id="pad-controls">
+    <a onmouseover="held.left = true;" onmouseout="held.left = false;"><img src="images/key_left.png"/></a>
+    <a onmouseover="held.down = true;" onmouseout="held.down = false;"><img src="images/key_down.png"/></a>
+    <a onmouseover="held.up = true;" onmouseout="held.up = false;"><img src="images/key_up.png"/></a>
+    <a onmouseover="held.right = true;" onmouseout="held.right = false;"><img src="images/key_right.png"/></a>
+</div>
+
+<a onclick="initGame(); return false">Restart game</a>
+
 </body>
 </html>

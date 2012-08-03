@@ -4,12 +4,12 @@ var spriteMap = new Image;
 var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
-var items = [];
+var items;
 
 var gameInterval;
 
 var current_level;
-var score = 0
+var score
 
 // position displayed level
 var scroll_x = 0;
@@ -677,6 +677,9 @@ function initGame() {
     player.spriteMap = new Image;
     player.spriteMap.src = 'images/mario_sprites.png';
     actors = [player];
+
+    items = []
+    score = 0
 
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
