@@ -49,10 +49,6 @@ var size = {
 };
 
 
-function $(id) {
-    return document.getElementById(id);
-}
-
 String.prototype.replaceAt = function (index, char) {
     return this.substr(0, index) + char + this.substr(index + char.length);
 }
@@ -651,7 +647,7 @@ function gameLoop() {
 
 function initGame() {
 
-    var canvas = $("game");
+    var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
     size.canvas.w = canvas.offsetWidth;
