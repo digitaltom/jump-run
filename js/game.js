@@ -5,7 +5,7 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
-var theme = "snoop";
+var theme = "super_mario";
 
 var gameInterval;
 
@@ -464,20 +464,21 @@ function checkCollision(actor, object) {
 
 function animate_actor(actor) {
     if (actor.speed.x > 0) {
-        actor.sprite.y = 16;
+        actor.sprite.y = actor.size.h;
     } else if (actor.speed.x < 0) {
-        actor.sprite.y = 48;
+        actor.sprite.y = actor.size.h*3;
     }
 
     if (actor.speed.y != 0) {
-        actor.sprite.x = 85;
+        // TODO: jump image is not aligned here
+        actor.sprite.x = actor.size.w*5 + 8;
     } else {
         if (actor.speed.x == 0) {
             actor.sprite.x = 0;
-        } else if (actor.sprite.x >= 48) {
-            actor.sprite.x = 16;
+        } else if (actor.sprite.x >= actor.size.w*3) {
+            actor.sprite.x = actor.size.w;
         } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
-            actor.sprite.x += 16;
+            actor.sprite.x += actor.size.w;
         }
     }
     if (held.down) {
@@ -627,8 +628,8 @@ function initGame() {
 
     player = {
         pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
-        sprite:{x:0, y:16},
-        size:{w:16, h:16},
+        sprite:{x:0, y:32},
+        size:{w:32, h:32},
         speed:{x:0, y:0}
     };
     scroll_x = player.pos.x - size.canvas.w / 2
