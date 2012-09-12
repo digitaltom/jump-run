@@ -5,6 +5,7 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
+var theme = "snoop";
 
 var gameInterval;
 
@@ -622,9 +623,9 @@ function initGame() {
         line_offset_y =  size.canvas.h / size.tile.target.h - current_level.level.length
     }
 
-    spriteMap.src = 'images/smb_tiles.png';
-    itemMap.src = 'images/smb_items_sheet.png';
-    enemyMap.src = 'images/smb_enemies_sheet.png';
+    spriteMap.src = 'themes/' +  theme + '/images/game_tiles.png';
+    itemMap.src = 'themes/' +  theme + '/images/item_tiles.png';
+    enemyMap.src = 'themes/' +  theme + '/images/enemy_tiles.png';
 
     player = {
         pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
@@ -635,7 +636,7 @@ function initGame() {
     scroll_x = player.pos.x - size.canvas.w/2
 
     player.spriteMap = new Image;
-    player.spriteMap.src = 'images/mario_sprites.png';
+    player.spriteMap.src = 'themes/' +  theme + '/images/player_sprites.png';
     actors = [player];
 
     items = []
