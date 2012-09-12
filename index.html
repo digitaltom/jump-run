@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Hackweek game</title>
 
-    <LINK href="css/game.css" rel="stylesheet" type="text/css">
+    <link href="css/game.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -14,19 +14,34 @@
     Guru meditation: No &lt;canvas&gt; element supported!
 </canvas>
 
+<div id="game-menu">
+    <ul>
+        <li><a href="#" id="button-play">Play</a></li>
+    </ul>
+</div>
+
+<div id="game-paused">
+
+</div>
+
+<div id="game-over">
+
+</div>
+
+<div id="pad-controls">
+    <img src="images/key_left.png" id="control-left"/>
+   <img src="images/key_up.png" id="control-up"/>
+    <img src="images/key_right.png" id="control-right"/>
+</div>
+
+
 <!-- don't forget the charset here, else the levels will be parsed incorrectly -->
 <script type="text/javascript" src="js/levels.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/game.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/controls.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/menu.js" charset="utf-8"></script>
 
-<div id="pad-controls">
-    <a ontouchstart="held.left = true;" ontouchend="held.left = false;"><img src="images/key_left.png"/></a>
-    <a ontouchstart="held.down = true;" ontouchend="held.down = false;"><img src="images/key_down.png"/></a>
-    <a ontouchstart="held.up = true;" ontouchend="held.up = false;"><img src="images/key_up.png"/></a>
-    <a ontouchstart="held.right = true;" ontouchend="held.right = false;"><img src="images/key_right.png"/></a>
-</div>
-
-<a onclick="restartGame(); return false">Restart game</a>
+<a onclick="initGame(); return false;">Restart game</a>
 
 </body>
 </html>

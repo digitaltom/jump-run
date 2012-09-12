@@ -122,7 +122,7 @@ function drawLevel() {
                         object.sy = 2;
                         collisionMap.push(object);
                         break;
-		    case 'k':
+                    case 'k':
                         object.sx = 6;
                         object.sy = 0;
                         collisionMap.push(object);
@@ -271,8 +271,8 @@ function drawLevel() {
                     case 'B':
                         object.sx = 1;
                         object.sy = 6;
-			object.type = 'exit'
-			collisionMap.push(object);
+                        object.type = 'exit'
+                        collisionMap.push(object);
                         break;
                     case 'O':
                         object.sx = 1;
@@ -290,7 +290,7 @@ function drawLevel() {
                         object.sx = 2;
                         object.sy = 5;
                         break;
-		    default:
+                    default:
                 }
                 if (object.sx != null && object.sy != null) {
                     ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start * tw, object.y, tw, th);
@@ -378,12 +378,12 @@ function updateCharacters() {
             }
             if (object && (collides.top || collides.bottom || collides.right || collides.left)) {
                 if (object.deadly == true) {
-		    //items.push({ sx:, sy:9, x:actor.pos.x, y:actor.pos.y, deadly:false, type:'looser' });
+                    //items.push({ sx:, sy:9, x:actor.pos.x, y:actor.pos.y, deadly:false, type:'looser' });
                     gameOver();
                 }
                 if (object.type == 'exit') {
                     levelWin();
-                }                
+                }
                 if (object.type == 'coin') {
                     items.splice(items.indexOf(object), 1);
                     score++;
@@ -498,7 +498,7 @@ function updateElements() {
                 } else if (item.sx == 1) {
                     item.sx = 0;
                 } else if (item.sx == 2) {
-                   items.splice(items.indexOf(item), 1);
+                    items.splice(items.indexOf(item), 1);
                 }
             }
             // move
@@ -507,7 +507,7 @@ function updateElements() {
             } else {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
-            sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w/2, item.y + size.tile.target.h)
+            sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
             if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H") {
                 item.speed_x *= -1
             }
@@ -579,10 +579,6 @@ function levelWin() {
     window.clearInterval(gameInterval);
 }
 
-function restartGame() {
-    window.clearInterval(gameInterval);
-    initGame();
-}
 
 function initializeLevel(level) {
     current_level = level;
@@ -611,6 +607,8 @@ function initGame() {
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
+    showMenu()
+
     size.canvas.w = canvas.offsetWidth;
     size.canvas.h = canvas.offsetHeight;
     size.tiles.target.w = size.canvas.w / size.tile.target.w
@@ -620,12 +618,12 @@ function initGame() {
 
     // if the canvas is not high enough, cut from the upper side
     if (size.canvas.h / size.tile.target.h < current_level.level.length + line_offset_y) {
-        line_offset_y =  size.canvas.h / size.tile.target.h - current_level.level.length
+        line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
     }
 
-    spriteMap.src = 'themes/' +  theme + '/images/game_tiles.png';
-    itemMap.src = 'themes/' +  theme + '/images/item_tiles.png';
-    enemyMap.src = 'themes/' +  theme + '/images/enemy_tiles.png';
+    spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
+    itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
+    enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
 
     player = {
         pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
@@ -633,15 +631,21 @@ function initGame() {
         size:{w:16, h:16},
         speed:{x:0, y:0}
     };
-    scroll_x = player.pos.x - size.canvas.w/2
+    scroll_x = player.pos.x - size.canvas.w / 2
 
     player.spriteMap = new Image;
-    player.spriteMap.src = 'themes/' +  theme + '/images/player_sprites.png';
+    player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
     actors = [player];
 
     items = []
     score = 0
+     startGame()
+}
 
+function startGame() {
+    hideMenu();
+    registerControls();
+    window.clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
 

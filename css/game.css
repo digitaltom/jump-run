@@ -1,4 +1,15 @@
- 
- #game {
-background-color: #5c94fc
- }
+#game {
+    background-color: #5c94fc
+}
+
+#game-menu {
+    visibility: hidden;
+}
+
+#game-pause {
+    visibility: hidden;
+}
+
+#game-over {
+    visibility: hidden;
+}
