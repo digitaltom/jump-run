@@ -539,7 +539,7 @@ function drawControls() {
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
     ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
     ctx.strokeText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
-     ctx.strokeText("Fps: " + (1000/frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
+    ctx.strokeText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
 
     ctx.strokeText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
@@ -607,12 +607,9 @@ function gameLoop() {
     frameTime += (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;
 
-
     drawLevel();
-
     updateCharacters();
     updateElements();
-
     drawActors();
     drawElements();
     drawControls();
@@ -624,19 +621,21 @@ function initGame() {
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
-    showMenu()
-
-    size.canvas.w = canvas.offsetWidth;
-    size.canvas.h = canvas.offsetHeight;
-    size.tiles.target.w = size.canvas.w / size.tile.target.w
-    size.tiles.target.h = size.canvas.h / size.tile.target.h
-
     initializeLevel(levels[2]);
 
-    // if the canvas is not high enough, cut from the upper side
-    if (size.canvas.h / size.tile.target.h < current_level.level.length + line_offset_y) {
-        line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
-    }
+    // re-sizing
+    offset_h = document.documentElement.clientHeight / size.tile.target.h
+    offset_w = document.documentElement.clientWidth / size.tile.target.w
+    size.canvas.w = document.documentElement.clientWidth - offset_w
+    size.canvas.h = document.documentElement.clientHeight - offset_h
+    canvas.width = size.canvas.w
+    canvas.height = size.canvas.h
+    size.tiles.target.w = size.canvas.w / size.tile.target.w
+    size.tiles.target.h = size.canvas.h / size.tile.target.h
+    // if the canvas is not high enough, cut from the upper side, if it's too high, move down
+    line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
+
+    showMenu()
 
     spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
     itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
