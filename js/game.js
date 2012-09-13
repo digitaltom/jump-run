@@ -22,6 +22,10 @@ var line_offset_y = 5;
 var held = {left:false, right:false, up:false, down:false};
 var collisionMap;
 
+// fps measurement
+var filterStrength = 20;
+var frameTime = 0, lastLoop = new Date, thisLoop;
+
 
 // speed, gravity parameters
 var speed = {
@@ -37,7 +41,7 @@ var speed = {
     fps:30
 }
 
-// size details about various aspects of the game
+// size details
 var size = {
     tile:{ // size of tiles
         source:{w:16, h:16},
@@ -47,6 +51,13 @@ var size = {
         target:{w:1, h:1} // this is set dynamically depending on the canvas size
     },
     canvas:{w:1, h:1} // the canvas size is read from the actual html
+};
+
+player = {
+    pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
+    sprite:{x:0, y:32},
+    size:{w:32, h:32},
+    speed:{x:0, y:0}
 };
 
 
@@ -466,16 +477,16 @@ function animate_actor(actor) {
     if (actor.speed.x > 0) {
         actor.sprite.y = actor.size.h;
     } else if (actor.speed.x < 0) {
-        actor.sprite.y = actor.size.h*3;
+        actor.sprite.y = actor.size.h * 3;
     }
 
     if (actor.speed.y != 0) {
         // TODO: jump image is not aligned here
-        actor.sprite.x = actor.size.w*5 + 8;
+        actor.sprite.x = actor.size.w * 5 + 8;
     } else {
         if (actor.speed.x == 0) {
             actor.sprite.x = 0;
-        } else if (actor.sprite.x >= actor.size.w*3) {
+        } else if (actor.sprite.x >= actor.size.w * 3) {
             actor.sprite.x = actor.size.w;
         } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
             actor.sprite.x += actor.size.w;
@@ -528,6 +539,7 @@ function drawControls() {
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
     ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
     ctx.strokeText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
+     ctx.strokeText("Fps: " + (1000/frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
 
     ctx.strokeText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
@@ -591,6 +603,10 @@ function initializeLevel(level) {
 
 function gameLoop() {
     ticks++;
+    var thisFrameTime = (thisLoop = new Date) - lastLoop;
+    frameTime += (thisFrameTime - frameTime) / filterStrength;
+    lastLoop = thisLoop;
+
 
     drawLevel();
 
@@ -626,12 +642,6 @@ function initGame() {
     itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
     enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
 
-    player = {
-        pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
-        sprite:{x:0, y:32},
-        size:{w:32, h:32},
-        speed:{x:0, y:0}
-    };
     scroll_x = player.pos.x - size.canvas.w / 2
 
     player.spriteMap = new Image;
@@ -640,7 +650,7 @@ function initGame() {
 
     items = []
     score = 0
-     startGame()
+    startGame()
 }
 
 function startGame() {
