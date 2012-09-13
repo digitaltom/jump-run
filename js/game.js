@@ -5,7 +5,7 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
-var theme = "super_mario";
+var theme = "snoop";
 
 var gameInterval;
 
@@ -56,7 +56,8 @@ var size = {
 player = {
     pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
     sprite:{x:0, y:32},
-    size:{w:32, h:32},
+    source_size:{w:32, h:32},
+    target_size:{w:40, h:40},
     speed:{x:0, y:0}
 };
 
@@ -360,8 +361,8 @@ function updateCharacters() {
         // block on level edge
         if (actor.pos.x < 0) {
             actor.pos.x = 0;
-        } else if (actor.pos.x + size.tile.target.w > current_level.width) {
-            actor.pos.x = current_level.width - size.tile.target.w;
+        } else if (actor.pos.x + actor.target_size.w > current_level.width) {
+            actor.pos.x = current_level.width - actor.target_size.w;
         }
 
         // add visible items + actors to collision check
@@ -410,11 +411,11 @@ function updateCharacters() {
                     collides.right = false;
                     collides.left = false;
                 } else if (collides.bottom) {
-                    actor.pos.y = object.y - size.tile.target.h;
+                    actor.pos.y = object.y - actor.target_size.h;
                     actor.speed.y = 0;
                 }
                 if (collides.right) {
-                    actor.pos.x = object.x - size.tile.target.w;
+                    actor.pos.x = object.x - actor.target_size.w;
                     actor.speed.x = 0;
                 } else if (collides.left) {
                     actor.pos.x = object.x + size.tile.target.w;
@@ -449,9 +450,9 @@ function updateCharacters() {
 function checkCollision(actor, object) {
     var collides = {top:false, bottom:false, left:false, right:false};
     // we are below or above an object
-    if (actor.pos.x + size.tile.target.w >= (object.x + size.tile.target.w * 0.3) && actor.pos.x <= object.x + size.tile.target.w * 0.7) {
+    if (actor.pos.x + actor.target_size.w >= (object.x + size.tile.target.w * 0.3) && actor.pos.x <= object.x + size.tile.target.w * 0.7) {
         // check bounce bottom:
-        if (actor.pos.y + size.tile.target.h >= object.y && actor.pos.y < object.y) {
+        if (actor.pos.y + actor.target_size.h >= object.y && actor.pos.y < object.y) {
             collides.bottom = true;
             // check bounce top:
         } else if (actor.pos.y <= (object.y + size.tile.target.h) && actor.pos.y > object.y) {
@@ -461,7 +462,7 @@ function checkCollision(actor, object) {
     // we are right or left of an object
     if ((actor.pos.y >= object.y) && (actor.pos.y <= (object.y + size.tile.target.h) )) {
         // check bounce right
-        if (actor.pos.x + size.tile.target.w >= object.x && actor.pos.x + size.tile.target.w < (object.x + size.tile.target.w )) {
+        if (actor.pos.x + actor.target_size.w >= object.x && actor.pos.x + actor.target_size.w < (object.x + size.tile.target.w )) {
             collides.right = true;
         }
         // check bounce left
@@ -475,21 +476,21 @@ function checkCollision(actor, object) {
 
 function animate_actor(actor) {
     if (actor.speed.x > 0) {
-        actor.sprite.y = actor.size.h;
+        actor.sprite.y = actor.source_size.h;
     } else if (actor.speed.x < 0) {
-        actor.sprite.y = actor.size.h * 3;
+        actor.sprite.y = actor.source_size.h * 3;
     }
 
     if (actor.speed.y != 0) {
         // TODO: jump image is not aligned here
-        actor.sprite.x = actor.size.w * 5 + 8;
+        actor.sprite.x = actor.source_size.w * 5 + 8;
     } else {
         if (actor.speed.x == 0) {
             actor.sprite.x = 0;
-        } else if (actor.sprite.x >= actor.size.w * 3) {
-            actor.sprite.x = actor.size.w;
+        } else if (actor.sprite.x >= actor.source_size.w * 3) {
+            actor.sprite.x = actor.source_size.w;
         } else if (Math.abs(actor.speed.x) > 1 && (ticks % 3 == 0)) {
-            actor.sprite.x += actor.size.w;
+            actor.sprite.x += actor.source_size.w;
         }
     }
     if (held.down) {
@@ -551,12 +552,12 @@ function drawActors() {
             actor.spriteMap,
             actor.sprite.x,
             actor.sprite.y,
-            actor.size.w,
-            actor.size.h,
+            actor.source_size.w,
+            actor.source_size.h,
             actor.pos.x - scroll_x_start,
             actor.pos.y,
-            size.tile.target.w,
-            size.tile.target.h
+            actor.target_size.w,
+            actor.target_size.h
         );
     });
 }
@@ -622,19 +623,7 @@ function initGame() {
     ctx = canvas.getContext("2d");
 
     initializeLevel(levels[2]);
-
-    // re-sizing
-    offset_h = document.documentElement.clientHeight / size.tile.target.h
-    offset_w = document.documentElement.clientWidth / size.tile.target.w
-    size.canvas.w = document.documentElement.clientWidth - offset_w
-    size.canvas.h = document.documentElement.clientHeight - offset_h
-    canvas.width = size.canvas.w
-    canvas.height = size.canvas.h
-    size.tiles.target.w = size.canvas.w / size.tile.target.w
-    size.tiles.target.h = size.canvas.h / size.tile.target.h
-    // if the canvas is not high enough, cut from the upper side, if it's too high, move down
-    line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
-
+    initDimensions()
     showMenu()
 
     spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
@@ -652,6 +641,26 @@ function initGame() {
     startGame()
 }
 
+function initDimensions() {
+    // re-sizing
+    var canvas = document.getElementById("game");
+    var browser_w = document.documentElement.clientWidth
+    var browser_h = document.documentElement.clientHeight
+    //alert(browser_w + "*" + browser_h)
+    var offset_h = browser_h / size.tile.target.h
+    var offset_w = browser_w / size.tile.target.w
+    size.canvas.w = browser_w - offset_w
+    size.canvas.h = browser_h - offset_h - 100
+    canvas.width = size.canvas.w
+    canvas.height = size.canvas.h
+    size.tiles.target.w = size.canvas.w / size.tile.target.w
+    size.tiles.target.h = size.canvas.h / size.tile.target.h
+    // if the canvas is not high enough, cut from the upper side, if it's too high, move down
+    line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
+    // FIXME: fix characters y position on re-size
+}
+
+
 function startGame() {
     hideMenu();
     registerControls();
@@ -663,3 +672,5 @@ function startGame() {
 window.onload = function () {
     initGame();
 }
+
+window.onresize = initDimensions;
