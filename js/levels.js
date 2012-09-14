@@ -50,7 +50,7 @@ var levels = [
             "    ^                                     qw      as    ^     as                                                 ^                                                 HH  HH   ^   HHH  HH                            HHHHHHH     ^   |   WUUUW        ",
             "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                          HHH  HHH /ü` HHHH  HHH    ^   qw             qw HHHHHHHH    /ü`  |   XXOXX  ^     ",
             "  /ügü`      {=} /ü`  p          as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`p p  p p         HHHH==HHHHügüHHHHH  HHHH} /ü`  as   {=}   p p asHHHHHHHHH   /ügü` H   XXBXX}/ü`    ",
-            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxxhhhhhxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         ]
     },
     {}

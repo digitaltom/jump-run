@@ -364,6 +364,10 @@ function updateCharacters() {
         } else if (actor.pos.x + actor.target_size.w > current_level.width) {
             actor.pos.x = current_level.width - actor.target_size.w;
         }
+        // die on level bottom
+        if (actor.pos.y > size.canvas.h) {
+            gameOver();
+        }
 
         // add visible items + actors to collision check
         // todo: only add visible items
