@@ -11,16 +11,41 @@ document.getElementById("button-play1").addEventListener('click', function (even
     startGame();
 }, false);
 
+document.getElementById("button-play1").addEventListener('mouseover', function (event) {
+    theme = 'super_mario'
+    current_level = levels[2];
+    initializeTheme()
+    initializeLevel()
+    drawLevel()
+}, false);
+
+
 document.getElementById("button-play2").addEventListener('click', function (event) {
     theme = 'snoop'
     current_level = levels[0];
     startGame();
 }, false);
 
+document.getElementById("button-play2").addEventListener('mouseover', function (event) {
+    theme = 'snoop'
+    current_level = levels[0];
+    initializeTheme()
+    initializeLevel()
+    drawLevel()
+}, false);
+
 document.getElementById("button-play3").addEventListener('click', function (event) {
     theme = 'suse'
     current_level = levels[1];
     startGame();
+}, false);
+
+document.getElementById("button-play3").addEventListener('mouseover', function (event) {
+    theme = 'suse'
+    current_level = levels[1];
+    initializeTheme()
+    initializeLevel()
+    drawLevel()
 }, false);
 
 var start_menu = document.getElementById("game-menu");

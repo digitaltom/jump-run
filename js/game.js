@@ -611,6 +611,13 @@ function initializeLevel() {
     // clone the level content so we still have the original for a restart
     current_level.level = current_level.template.slice(0)
     current_level.width = current_level.level[0].length * size.tile.target.w;
+    items = []
+    collisionMap = []
+    actors = [player];
+    scroll_x = player.pos.x - size.canvas.w / 2
+    score = 0
+    player.pos.x = 2 * size.tile.target.w
+    player.pos.y = 5 * size.tile.target.h
 }
 
 function initializeTheme() {
@@ -618,6 +625,8 @@ function initializeTheme() {
     itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
     enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
     player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
+    player.sprite.x = 0
+    player.sprite.y = 32
 }
 
 function gameLoop() {
@@ -645,17 +654,6 @@ function initGame() {
     initDimensions()
     showStartMenu()
 
-    player.pos.x = 2 * size.tile.target.w
-    player.pos.y = 5 * size.tile.target.h
-    player.sprite.x = 0
-    player.sprite.y = 32
-
-    actors = [player];
-
-    scroll_x = player.pos.x - size.canvas.w / 2
-    items = []
-    score = 0
-
     // draw initial level for menu background
     initializeTheme()
     drawLevel()
@@ -669,7 +667,7 @@ function initDimensions() {
     var offset_h = browser_h / size.tile.target.h
     var offset_w = browser_w / size.tile.target.w
     size.canvas.w = browser_w - offset_w
-    size.canvas.h = browser_h - offset_h - 100
+    size.canvas.h = browser_h - offset_h
     canvas.width = size.canvas.w
     canvas.height = size.canvas.h
     size.tiles.target.w = size.canvas.w / size.tile.target.w

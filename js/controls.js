@@ -18,6 +18,8 @@ function registerControls() {
             case 40: // down
                 held.down = true;
                 break;
+            case 27: // escape
+                initGame()
             default:
                 return;
         }

@@ -14,24 +14,11 @@
     top: 40px;
 }
 
-
-#game-menu {
-
-}
-
-#game-over {
-
-}
-
 .menu-item {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
     background-color: #b0e0e6;
-}
-
-#game-pause {
-    visibility: hidden;
 }
 
 #game-over {
@@ -40,5 +27,23 @@
 
 #pad-controls {
     visibility: hidden;
+}
+
+#control-left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#control-up {
+    position: absolute;
+    left: 130px;
+    bottom: 0;
+}
+
+#control-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
