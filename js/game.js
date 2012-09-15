@@ -543,13 +543,14 @@ function updateElements() {
 
 function drawControls() {
     var actor = actors[0];
-    ctx.strokeText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
+    ctx.font = '12px sans-serif'
+    ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
         ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
-    ctx.strokeText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
-    ctx.strokeText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
-    ctx.strokeText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
-
-    ctx.strokeText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
+    ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
+    ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
+    ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h*4)
+    ctx.font = 'bold 12px sans-serif'
+    ctx.fillText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
 
 
