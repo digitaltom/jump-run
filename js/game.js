@@ -57,7 +57,8 @@ player = {
     pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
     sprite:{x:0, y:32},
     source_size:{w:32, h:32},
-    target_size:{w:40, h:40},
+    // max player size is twice tile size
+    target_size:{w:62, h:62},
     speed:{x:0, y:0}
 };
 
@@ -65,6 +66,11 @@ player = {
 String.prototype.replaceAt = function (index, char) {
     return this.substr(0, index) + char + this.substr(index + char.length);
 }
+
+Number.prototype.inRange = function( a,b ) {
+    var n = +this;
+    return ( n >= a && n <= b );
+};
 
 function replaceLevelSpriteXY(x, y, item) {
     line_nr = y / size.tile.target.h - line_offset_y
@@ -385,6 +391,7 @@ function updateCharacters() {
                 }
             }
             if (collides.bottom) {
+                // jump on enemy
                 if (object.type == 'enemy_mushroom') {
                     object.deadly = false
                     object.speed = 0
@@ -411,14 +418,10 @@ function updateCharacters() {
                 if (collides.top) {
                     actor.pos.y = object.y + size.tile.target.h;
                     actor.speed.y = 1;
-                    // intentionally skip right/left bounce
-                    collides.right = false;
-                    collides.left = false;
                 } else if (collides.bottom) {
                     actor.pos.y = object.y - actor.target_size.h;
                     actor.speed.y = 0;
-                }
-                if (collides.right) {
+                } else if (collides.right) {
                     actor.pos.x = object.x - actor.target_size.w;
                     actor.speed.x = 0;
                 } else if (collides.left) {
@@ -453,24 +456,24 @@ function updateCharacters() {
 
 function checkCollision(actor, object) {
     var collides = {top:false, bottom:false, left:false, right:false};
-    // we are below or above an object
-    if (actor.pos.x + actor.target_size.w >= (object.x + size.tile.target.w * 0.3) && actor.pos.x <= object.x + size.tile.target.w * 0.7) {
+    // we are below or above an object (use the middle of the actor, with tolerance)
+    if ( (actor.pos.x + actor.target_size.w/2).inRange( object.x - 0.25 * size.tile.target.w, object.x + 1.25 * size.tile.target.w) ) {
         // check bounce bottom:
-        if (actor.pos.y + actor.target_size.h >= object.y && actor.pos.y < object.y) {
+        if ( (actor.pos.y + actor.target_size.h).inRange( object.y, object.y + size.tile.target.h - 1 ) && actor.pos.y < object.y) {
             collides.bottom = true;
             // check bounce top:
-        } else if (actor.pos.y <= (object.y + size.tile.target.h) && actor.pos.y > object.y) {
+        } else if (actor.pos.y.inRange( object.y, object.y + size.tile.target.h ) ) {
             collides.top = true;
         }
     }
     // we are right or left of an object
-    if ((actor.pos.y >= object.y) && (actor.pos.y <= (object.y + size.tile.target.h) )) {
+    if ( (actor.pos.y + actor.target_size.h/2).inRange( object.y + 1 , object.y + size.tile.target.h) ) {
         // check bounce right
-        if (actor.pos.x + actor.target_size.w >= object.x && actor.pos.x + actor.target_size.w < (object.x + size.tile.target.w )) {
+        if ( (actor.pos.x + actor.target_size.w).inRange( object.x, object.x + size.tile.target.w ) ) {
             collides.right = true;
         }
         // check bounce left
-        if (actor.pos.x < ( object.x + size.tile.target.w ) && actor.pos.x > object.x) {
+        if (actor.pos.x.inRange( object.x, object.x + size.tile.target.w ) ) {
             collides.left = true;
         }
     }
