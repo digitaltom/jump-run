@@ -7,14 +7,23 @@
     text-align: center;
 }
 
-#game-menu {
+.game-info {
     visibility: hidden;
     position: absolute;
     width: 100%;
     top: 40px;
 }
 
-#menu-start {
+
+#game-menu {
+
+}
+
+#game-over {
+
+}
+
+.menu-item {
     width: 50%;
     margin-left: auto;
     margin-right: auto;

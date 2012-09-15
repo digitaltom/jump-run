@@ -590,14 +590,15 @@ function drawElements() {
 
 function gameOver() {
     // todo: dying animation
-    ctx.strokeText("Game Over", size.tile.target.w * 5, size.tile.target.h * 6);
     actors = [];
+    showGameOver()
 }
 
 function levelWin() {
     // todo:  winning animation
-    ctx.strokeText("Level done!", size.tile.target.w * 5, size.tile.target.h * 6);
     actors = [];
+    // todo: level done menu
+    showGameOver()
 }
 
 
@@ -631,7 +632,7 @@ function initGame() {
 
     initializeLevel(levels[2]);
     initDimensions()
-    showMenu()
+    showStartMenu()
 
     theme = 'snoop'
     spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
@@ -670,7 +671,7 @@ function initDimensions() {
 
 
 function startGame() {
-    hideMenu();
+    hideMenus();
     registerControls();
     window.clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
