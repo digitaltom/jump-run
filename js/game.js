@@ -5,7 +5,6 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
-var theme = "snoop";
 
 var gameInterval;
 
@@ -521,14 +520,14 @@ function updateElements() {
                 }
             }
             // move
-
             if (item.speed_x > 0) {
                 sprite_collide = getLevelSpriteXY(item.x + size.tile.target.w, item.y)
             } else {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
-            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H") {
+            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H" ||
+                item.x <= 0) {
                 item.speed_x *= -1
             }
             if (sprite_bottom != "x" && sprite_bottom != "#" && sprite_bottom != "?" && sprite_bottom != "ß") {
@@ -634,6 +633,7 @@ function initGame() {
     initDimensions()
     showMenu()
 
+    theme = 'snoop'
     spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
     itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
     enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
