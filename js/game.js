@@ -342,6 +342,7 @@ function updateCharacters() {
             }
         }
         if (held.up && actor.speed.y == 0) {
+            sound_jump()
             actor.speed.y -= speed.player.velocity_y;
         } else if (held.down) {
             // this only causes a duck animation, nothing happens in term of speed
@@ -398,19 +399,21 @@ function updateCharacters() {
                     object.speed = 0
                     object.sx = 2
                     score++;
+                    sound_jump_on_enemy()
                 }
             }
             if (object && (collides.top || collides.bottom || collides.right || collides.left)) {
                 if (object.deadly == true) {
                     //items.push({ sx:, sy:9, x:actor.pos.x, y:actor.pos.y, deadly:false, type:'looser' });
-                    gameOver();
+                    gameOver()
                 }
                 if (object.type == 'exit') {
-                    levelWin();
+                    levelWin()
                 }
                 if (object.type == 'coin') {
-                    items.splice(items.indexOf(object), 1);
-                    score++;
+                    items.splice(items.indexOf(object), 1)
+                    score++
+                    sound_coin()
                 }
             }
 
@@ -596,7 +599,8 @@ function drawElements() {
 
 function gameOver() {
     // todo: dying animation
-    actors = [];
+    actors = []
+    sound_dead()
     showGameOver()
 }
 
