@@ -638,8 +638,6 @@ function initGame() {
     itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
     enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
 
-    scroll_x = player.pos.x - size.canvas.w / 2
-
     player.spriteMap = new Image;
     player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
     player.pos.x = 2 * size.tile.target.w
@@ -647,6 +645,7 @@ function initGame() {
 
     actors = [player];
 
+    scroll_x = player.pos.x - size.canvas.w / 2
     items = []
     score = 0
     drawLevel()
@@ -688,6 +687,7 @@ window.onload = function () {
 }
 
 window.onresize = function () {
-    restartGame()
+    window.clearInterval(gameInterval);
+    initGame();
 }
 

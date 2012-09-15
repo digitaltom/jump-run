@@ -2,8 +2,23 @@
     background-color: #5c94fc;
 }
 
+#game-container {
+    position: relative;
+    text-align: center;
+}
+
 #game-menu {
     visibility: hidden;
+    position: absolute;
+    width: 100%;
+    top: 40px;
+}
+
+#menu-start {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #b0e0e6;
 }
 
 #game-pause {
@@ -13,3 +28,8 @@
 #game-over {
     visibility: hidden;
 }
+
+#pad-controls {
+    visibility: hidden;
+}
+

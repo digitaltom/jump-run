@@ -10,14 +10,19 @@
 <body>
 
 
-<canvas id="game">
-    Guru meditation: No &lt;canvas&gt; element supported!
-</canvas>
+<div id="game-container">
+    <canvas id="game">
+        Guru meditation: No &lt;canvas&gt; element supported!
+    </canvas>
 
-<div id="game-menu">
-    <ul>
-        <li><a href="#" id="button-play">Play</a></li>
-    </ul>
+    <div id="game-menu">
+        <div id="menu-start">
+            <ul>
+                <li><a href="#" id="button-play">Play</a></li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <div id="game-paused">
@@ -30,7 +35,7 @@
 
 <div id="pad-controls">
     <img src="images/key_left.png" id="control-left"/>
-   <img src="images/key_up.png" id="control-up"/>
+    <img src="images/key_up.png" id="control-up"/>
     <img src="images/key_right.png" id="control-right"/>
 </div>
 
@@ -41,8 +46,6 @@
 <script type="text/javascript" src="js/game.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/controls.js" charset="utf-8"></script>
 
-
-<a onclick="restartGame(); return false;">Restart game</a>
 
 </body>
 </html>

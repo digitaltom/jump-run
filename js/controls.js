@@ -48,9 +48,12 @@ function registerControls() {
     };
 
 
-// touch based controls:
+    // touch based controls:
 
-// prevent scrolling
+    // TODO: hide on non-touch devices
+    document.getElementById("pad-controls").style.visibility = "visible"
+
+    // prevent scrolling
     document.body.addEventListener('touchmove', function (event) {
         event.preventDefault();
     }, false);
