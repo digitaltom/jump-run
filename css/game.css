@@ -1,3 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000000;
+}
+
 #game {
     background-color: #5c94fc;
 }
@@ -18,8 +27,17 @@
     width: 50%;
     margin-left: auto;
     margin-right: auto;
-    background-color: #b0e0e6;
+    background-color: #c0c0c0;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 3px solid #a0a0a0;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
+
+.menu-item:hover {opacity: 0.6; }
 
 #game-over {
     visibility: hidden;
@@ -33,17 +51,26 @@
     position: absolute;
     left: 0;
     bottom: 0;
+    height: 100px;
+    width: 100px;
+    background-image: url("../images/arrow-left.png");
 }
 
 #control-up {
     position: absolute;
     left: 130px;
     bottom: 0;
+    height: 100px;
+    width: 100px;
+    background-image: url("../images/arrow-up.png");
 }
 
 #control-right {
     position: absolute;
     right: 0;
     bottom: 0;
+    height: 100px;
+    width: 100px;
+    background-image: url("../images/arrow-right.png");
 }
 

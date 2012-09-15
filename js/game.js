@@ -664,10 +664,8 @@ function initDimensions() {
     var canvas = document.getElementById("game");
     var browser_w = document.documentElement.clientWidth
     var browser_h = document.documentElement.clientHeight
-    var offset_h = browser_h / size.tile.target.h
-    var offset_w = browser_w / size.tile.target.w
-    size.canvas.w = browser_w - offset_w
-    size.canvas.h = browser_h - offset_h
+    size.canvas.w = browser_w - 3
+    size.canvas.h = browser_h - 3
     canvas.width = size.canvas.w
     canvas.height = size.canvas.h
     size.tiles.target.w = size.canvas.w / size.tile.target.w
