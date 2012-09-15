@@ -6,9 +6,11 @@ var enemyMap = new Image;
 var actors;
 var items;
 
-var gameInterval;
+// default theme abd level
+var theme = 'snoop'
+var current_level = levels[2];
 
-var current_level;
+var gameInterval;
 var score
 
 // position displayed level
@@ -56,9 +58,10 @@ player = {
     pos:{x:0, y:0},
     sprite:{x:0, y:32},
     source_size:{w:32, h:32},
-    target_size:{w:64, h:64},
+    target_size:{w:42, h:42},
     speed:{x:0, y:0}
 };
+player.spriteMap = new Image;
 
 
 String.prototype.replaceAt = function (index, char) {
@@ -544,11 +547,13 @@ function updateElements() {
 function drawControls() {
     var actor = actors[0];
     ctx.font = '12px sans-serif'
-    ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
-        ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
+    if (actor) {
+        ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
+            ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
+    }
     ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
     ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
-    ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h*4)
+    ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
     ctx.font = 'bold 12px sans-serif'
     ctx.fillText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
 }
@@ -602,14 +607,18 @@ function levelWin() {
     showGameOver()
 }
 
-
-function initializeLevel(level) {
-    current_level = level;
+function initializeLevel() {
     // clone the level content so we still have the original for a restart
-    level.level = level.template.slice(0)
-    level.width = level.level[0].length * size.tile.target.w;
+    current_level.level = current_level.template.slice(0)
+    current_level.width = current_level.level[0].length * size.tile.target.w;
 }
 
+function initializeTheme() {
+    spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
+    itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
+    enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
+    player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
+}
 
 function gameLoop() {
     ticks++;
@@ -628,28 +637,27 @@ function gameLoop() {
 
 function initGame() {
 
+    window.clearInterval(gameInterval);
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
-    initializeLevel(levels[2]);
+    initializeLevel()
     initDimensions()
     showStartMenu()
 
-    theme = 'snoop'
-    spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
-    itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
-    enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
-
-    player.spriteMap = new Image;
-    player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
     player.pos.x = 2 * size.tile.target.w
     player.pos.y = 5 * size.tile.target.h
+    player.sprite.x = 0
+    player.sprite.y = 32
 
     actors = [player];
 
     scroll_x = player.pos.x - size.canvas.w / 2
     items = []
     score = 0
+
+    // draw initial level for menu background
+    initializeTheme()
     drawLevel()
 }
 
@@ -673,7 +681,9 @@ function initDimensions() {
 
 function startGame() {
     hideMenus();
-    registerControls();
+    registerControls()
+    initializeTheme()
+    initializeLevel()
     window.clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
@@ -689,7 +699,6 @@ window.onload = function () {
 }
 
 window.onresize = function () {
-    window.clearInterval(gameInterval);
     initGame();
 }
 

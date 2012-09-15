@@ -5,7 +5,21 @@ function hideMenus() {
 
 // Main menu
 
-document.getElementById("button-play").addEventListener('click', function (event) {
+document.getElementById("button-play1").addEventListener('click', function (event) {
+    theme = 'super_mario'
+    current_level = levels[2];
+    startGame();
+}, false);
+
+document.getElementById("button-play2").addEventListener('click', function (event) {
+    theme = 'snoop'
+    current_level = levels[0];
+    startGame();
+}, false);
+
+document.getElementById("button-play3").addEventListener('click', function (event) {
+    theme = 'suse'
+    current_level = levels[1];
     startGame();
 }, false);
 
@@ -24,6 +38,12 @@ function hideStartMenu() {
 
 document.getElementById("button-restart").addEventListener('click', function (event) {
     restartGame();
+}, false);
+
+document.getElementById("button-menu").addEventListener('click', function (event) {
+    hideGameOver()
+    initGame()
+    showStartMenu()
 }, false);
 
 var gameover_menu = document.getElementById("game-over");
