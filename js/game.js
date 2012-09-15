@@ -54,11 +54,10 @@ var size = {
 };
 
 player = {
-    pos:{x:2 * size.tile.target.w, y:5 * size.tile.target.h},
+    pos:{x:0, y:0},
     sprite:{x:0, y:32},
     source_size:{w:32, h:32},
-    // max player size is twice tile size
-    target_size:{w:62, h:62},
+    target_size:{w:64, h:64},
     speed:{x:0, y:0}
 };
 
@@ -67,7 +66,7 @@ String.prototype.replaceAt = function (index, char) {
     return this.substr(0, index) + char + this.substr(index + char.length);
 }
 
-Number.prototype.inRange = function( a,b ) {
+Number.prototype.inRange = function (a, b) {
     var n = +this;
     return ( n >= a && n <= b );
 };
@@ -457,23 +456,23 @@ function updateCharacters() {
 function checkCollision(actor, object) {
     var collides = {top:false, bottom:false, left:false, right:false};
     // we are below or above an object (use the middle of the actor, with tolerance)
-    if ( (actor.pos.x + actor.target_size.w/2).inRange( object.x - 0.25 * size.tile.target.w, object.x + 1.25 * size.tile.target.w) ) {
+    if ((actor.pos.x + actor.target_size.w / 2).inRange(object.x - 0.25 * size.tile.target.w, object.x + 1.25 * size.tile.target.w)) {
         // check bounce bottom:
-        if ( (actor.pos.y + actor.target_size.h).inRange( object.y, object.y + size.tile.target.h - 1 ) && actor.pos.y < object.y) {
+        if ((actor.pos.y + actor.target_size.h).inRange(object.y, object.y + size.tile.target.h - 1) && actor.pos.y < object.y) {
             collides.bottom = true;
             // check bounce top:
-        } else if (actor.pos.y.inRange( object.y, object.y + size.tile.target.h ) ) {
+        } else if (actor.pos.y.inRange(object.y, object.y + size.tile.target.h)) {
             collides.top = true;
         }
     }
     // we are right or left of an object
-    if ( (actor.pos.y + actor.target_size.h/2).inRange( object.y + 1 , object.y + size.tile.target.h) ) {
+    if ((actor.pos.y + actor.target_size.h / 2).inRange(object.y - 0.25 * size.tile.target.h, object.y + 1.25 * size.tile.target.h)) {
         // check bounce right
-        if ( (actor.pos.x + actor.target_size.w).inRange( object.x, object.x + size.tile.target.w ) ) {
+        if ((actor.pos.x + actor.target_size.w).inRange(object.x, object.x + size.tile.target.w)) {
             collides.right = true;
         }
         // check bounce left
-        if (actor.pos.x.inRange( object.x, object.x + size.tile.target.w ) ) {
+        if (actor.pos.x.inRange(object.x, object.x + size.tile.target.w)) {
             collides.left = true;
         }
     }
@@ -522,6 +521,7 @@ function updateElements() {
                 }
             }
             // move
+
             if (item.speed_x > 0) {
                 sprite_collide = getLevelSpriteXY(item.x + size.tile.target.w, item.y)
             } else {
@@ -535,6 +535,7 @@ function updateElements() {
                 item.speed_x *= -1
             }
             item.x += item.speed_x
+
         }
     })
 
@@ -591,13 +592,13 @@ function drawElements() {
 function gameOver() {
     // todo: dying animation
     ctx.strokeText("Game Over", size.tile.target.w * 5, size.tile.target.h * 6);
-    window.clearInterval(gameInterval);
+    actors = [];
 }
 
 function levelWin() {
     // todo:  winning animation
     ctx.strokeText("Level done!", size.tile.target.w * 5, size.tile.target.h * 6);
-    window.clearInterval(gameInterval);
+    actors = [];
 }
 
 
@@ -641,11 +642,14 @@ function initGame() {
 
     player.spriteMap = new Image;
     player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
+    player.pos.x = 2 * size.tile.target.w
+    player.pos.y = 5 * size.tile.target.h
+
     actors = [player];
 
     items = []
     score = 0
-    startGame()
+    drawLevel()
 }
 
 function initDimensions() {
@@ -653,7 +657,6 @@ function initDimensions() {
     var canvas = document.getElementById("game");
     var browser_w = document.documentElement.clientWidth
     var browser_h = document.documentElement.clientHeight
-    //alert(browser_w + "*" + browser_h)
     var offset_h = browser_h / size.tile.target.h
     var offset_w = browser_w / size.tile.target.w
     size.canvas.w = browser_w - offset_w
@@ -664,7 +667,6 @@ function initDimensions() {
     size.tiles.target.h = size.canvas.h / size.tile.target.h
     // if the canvas is not high enough, cut from the upper side, if it's too high, move down
     line_offset_y = size.canvas.h / size.tile.target.h - current_level.level.length
-    // FIXME: fix characters y position on re-size
 }
 
 
@@ -675,9 +677,17 @@ function startGame() {
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
 
+function restartGame() {
+    window.clearInterval(gameInterval)
+    initGame()
+    startGame()
+}
 
 window.onload = function () {
     initGame();
 }
 
-window.onresize = initDimensions;
+window.onresize = function () {
+    restartGame()
+}
+
