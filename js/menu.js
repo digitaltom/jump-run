@@ -74,6 +74,7 @@ document.getElementById("button-menu").addEventListener('click', function (event
 var gameover_menu = document.getElementById("game-over");
 
 function showGameOver() {
+    hideControls()
     gameover_menu.style.visibility = "visible";
 }
 

@@ -654,6 +654,7 @@ function initGame() {
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
+    hideControls()
     initializeLevel()
     initDimensions()
     showStartMenu()
@@ -668,8 +669,8 @@ function initDimensions() {
     var canvas = document.getElementById("game");
     var browser_w = document.documentElement.clientWidth
     var browser_h = document.documentElement.clientHeight
-    size.canvas.w = browser_w - 3
-    size.canvas.h = browser_h - 3
+    size.canvas.w = browser_w - 4
+    size.canvas.h = browser_h - 4
     canvas.width = size.canvas.w
     canvas.height = size.canvas.h
     size.tiles.target.w = size.canvas.w / size.tile.target.w

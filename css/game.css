@@ -47,28 +47,33 @@ body {
     visibility: hidden;
 }
 
-#control-left {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 100px;
-    width: 100px;
-    background-image: url("../images/arrow-left.png");
-}
 
 #control-up {
     position: absolute;
-    left: 130px;
-    bottom: 0;
+    left: 0px;
+    bottom: 35px;
     height: 100px;
     width: 100px;
     background-image: url("../images/arrow-up.png");
 }
 
+#control-up:hover {
+    background-image: url("../images/arrow-up-active.png");
+}
+
+#control-left {
+    position: absolute;
+    right: 130px;
+    bottom: 35px;
+    height: 100px;
+    width: 100px;
+    background-image: url("../images/arrow-left.png");
+}
+
 #control-right {
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: 35px;
     height: 100px;
     width: 100px;
     background-image: url("../images/arrow-right.png");

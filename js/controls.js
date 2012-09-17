@@ -1,5 +1,9 @@
 // key based controls:
 
+function hideControls() {
+    document.getElementById("pad-controls").style.visibility = "hidden"
+}
+
 function registerControls() {
     window.onkeydown = function (e) {
         switch (e.keyCode) {
@@ -62,15 +66,19 @@ function registerControls() {
 
     var left = document.getElementById("control-left");
     left.addEventListener('mouseover', function (event) {
+        held.right = false;
         held.left = true;
     }, false);
     left.addEventListener('touchstart', function (event) {
+        held.right = false;
         held.left = true;
     }, false);
     left.addEventListener('mouseout', function (event) {
+        held.right = false;
         held.left = false;
     }, false);
     left.addEventListener('touchend', function (event) {
+        held.right = false;
         held.left = false;
     }, false);
 
@@ -90,15 +98,19 @@ function registerControls() {
 
     var right = document.getElementById("control-right");
     right.addEventListener('mouseover', function (event) {
+        held.left = false;
         held.right = true;
     }, false);
     right.addEventListener('touchstart', function (event) {
+        held.left = false;
         held.right = true;
     }, false);
     right.addEventListener('mouseout', function (event) {
+        held.left = false;
         held.right = false;
     }, false);
     right.addEventListener('touchend', function (event) {
+        held.left = false;
         held.right = false;
     }, false);
 
