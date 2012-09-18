@@ -5,8 +5,9 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
+var debug = true;
 
-// default theme abd level
+// default theme and level
 var theme = 'snoop'
 var current_level = levels[2];
 
@@ -548,17 +549,19 @@ function updateElements() {
 
 
 function drawControls() {
-    var actor = actors[0];
-    ctx.font = '12px sans-serif'
-    if (actor) {
-        ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
-            ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h);
+    if (debug) {
+        var actor = actors[0];
+        ctx.font = '12px sans-serif'
+        if (actor) {
+            ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
+                ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h + 20);
+        }
+        ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h + 40);
+        ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h + 60);
+        ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h + 80)
     }
-    ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h * 2);
-    ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h * 3);
-    ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h * 4)
     ctx.font = 'bold 12px sans-serif'
-    ctx.fillText("Score: : " + score, size.canvas.w - 100, size.tile.target.h);
+    ctx.fillText("Score: : " + score, size.tile.target.w, size.tile.target.h);
 }
 
 
@@ -622,6 +625,7 @@ function initializeLevel() {
     score = 0
     player.pos.x = 2 * size.tile.target.w
     player.pos.y = 5 * size.tile.target.h
+    theme = current_level.theme
 }
 
 function initializeTheme() {
@@ -683,8 +687,8 @@ function initDimensions() {
 function startGame() {
     hideMenus();
     registerControls()
-    initializeTheme()
     initializeLevel()
+    initializeTheme()
     window.clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }

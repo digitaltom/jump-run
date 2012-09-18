@@ -19,22 +19,36 @@
     </canvas>
 
     <div id="game-menu" class="game-info">
-        <div class="menu-item" id="button-play1">
+
+        <div class="menu-item menu-text" id="intro">
+            <p>Welcome to Tom's HTML5 Jump&Run Framework.</p>
+            <p>Please choose your level:</p>
+        </div>
+
+        <div class="menu-item menu-link" id="button-play1">
             Play Super Mario Level 1
         </div>
-        <div class="menu-item" id="button-play2">
+        <div class="menu-item menu-link" id="button-play2">
             Play Snoopy
         </div>
-        <div class="menu-item" id="button-play3">
+        <div class="menu-item menu-link" id="button-play3">
             Play SUSE
         </div>
+        <div class="menu-item menu-link" id="button-play4">
+            Play bauersman
+        </div>
+
+        <div class="menu-item menu-text" id="help">
+            <p>You can use use your arrow keys, or pad controls to play.</p>
+        </div>
+
     </div>
 
     <div id="game-over" class="game-info">
-        <div class="menu-item" id="button-restart">
+        <div class="menu-item menu-link" id="button-restart">
             Play again
         </div>
-        <div class="menu-item" id="button-menu">
+        <div class="menu-item menu-link" id="button-menu">
             Back to main menu
         </div>
     </div>
@@ -56,6 +70,11 @@
 <script type="text/javascript" src="js/controls.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/sounds.js" charset="utf-8"></script>
 
+
+<!-- <a href="https://github.com/digitaltom/hackweek">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+         alt="Fork me on GitHub"></a> -->
 
 </body>
 </html>

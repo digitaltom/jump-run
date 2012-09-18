@@ -31,13 +31,22 @@ body {
     -moz-border-radius: 15px;
     border-radius: 15px;
     -webkit-border-radius: 15px;
-    border: 3px solid #a0a0a0;
+    border: 3px solid #707070;
     padding: 5px;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
-.menu-item:hover {opacity: 0.6; }
+.menu-link:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    border: 3px solid #a0a0a0;
+}
+
+.menu-text {
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
 
 #game-over {
     visibility: hidden;
@@ -46,7 +55,6 @@ body {
 #pad-controls {
     visibility: hidden;
 }
-
 
 #control-up {
     position: absolute;
