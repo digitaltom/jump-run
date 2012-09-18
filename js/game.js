@@ -60,9 +60,9 @@ player = {
     sprite:{x:0, y:32},
     source_size:{w:32, h:32},
     target_size:{w:42, h:42},
-    speed:{x:0, y:0}
+    speed:{x:0, y:0},
+    spriteMap: new Image
 };
-player.spriteMap = new Image;
 
 
 String.prototype.replaceAt = function (index, char) {
@@ -533,7 +533,7 @@ function updateElements() {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
-            if (sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H" ||
+            if (sprite_collide == "x" || sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H" ||
                 item.x <= 0) {
                 item.speed_x *= -1
             }
@@ -621,10 +621,10 @@ function initializeLevel() {
     items = []
     collisionMap = []
     actors = [player];
-    scroll_x = player.pos.x - size.canvas.w / 2
     score = 0
     player.pos.x = 2 * size.tile.target.w
     player.pos.y = 5 * size.tile.target.h
+    scroll_x = player.pos.x - size.canvas.w / 2
     theme = current_level.theme
 }
 
