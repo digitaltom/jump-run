@@ -310,6 +310,22 @@ function drawLevel() {
                         object.sx = 2;
                         object.sy = 5;
                         break;
+                    case '(':
+                        object.sx = 11;
+                        object.sy = 0;
+                        break;
+                    case ')':
+                        object.sx = 12;
+                        object.sy = 0;
+                        break;
+                    case '[':
+                        object.sx = 11;
+                        object.sy = 1;
+                        break;
+                    case ']':
+                        object.sx = 12;
+                        object.sy = 1;
+                        break;
                     default:
                 }
                 if (object.sx != null && object.sy != null) {
