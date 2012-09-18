@@ -78,6 +78,10 @@ body {
     background-image: url("../images/arrow-left.png");
 }
 
+#control-left:hover {
+    background-image: url("../images/arrow-left-active.png");
+}
+
 #control-right {
     position: absolute;
     right: 0;
@@ -85,5 +89,9 @@ body {
     height: 100px;
     width: 100px;
     background-image: url("../images/arrow-right.png");
+}
+
+#control-right:hover {
+    background-image: url("../images/arrow-right-active.png");
 }
 
