@@ -4,6 +4,11 @@ function hideControls() {
     document.getElementById("pad-controls").style.visibility = "hidden"
 }
 
+function is_touch_device() {
+    return !!('ontouchstart' in window);
+}
+
+
 function registerControls() {
     window.onkeydown = function (e) {
         switch (e.keyCode) {
@@ -56,8 +61,9 @@ function registerControls() {
 
     // touch based controls:
 
-    // TODO: hide on non-touch devices
-    document.getElementById("pad-controls").style.visibility = "visible"
+    if (is_touch_device()) {
+        document.getElementById("pad-controls").style.visibility = "visible"
+    }
 
     // prevent scrolling
     document.body.addEventListener('touchmove', function (event) {
@@ -65,53 +71,37 @@ function registerControls() {
     }, false);
 
     var left = document.getElementById("control-left");
-    left.addEventListener('mouseover', function (event) {
-        held.right = false;
-        held.left = true;
-    }, false);
     left.addEventListener('touchstart', function (event) {
         held.right = false;
         held.left = true;
-    }, false);
-    left.addEventListener('mouseout', function (event) {
-        held.right = false;
-        held.left = false;
+        left.style.backgroundImage = "url('images/arrow-left-active.png')"
     }, false);
     left.addEventListener('touchend', function (event) {
         held.right = false;
         held.left = false;
+        left.style.backgroundImage = "url('images/arrow-left.png')"
     }, false);
 
     var up = document.getElementById("control-up");
-    up.addEventListener('mouseover', function (event) {
-        held.up = true;
-    }, false);
     up.addEventListener('touchstart', function (event) {
         held.up = true;
-    }, false);
-    up.addEventListener('mouseout', function (event) {
-        held.up = false;
+        up.style.backgroundImage = "url('images/arrow-up-active.png')"
     }, false);
     up.addEventListener('touchend', function (event) {
         held.up = false;
+        up.style.backgroundImage = "url('images/arrow-up.png')"
     }, false);
 
     var right = document.getElementById("control-right");
-    right.addEventListener('mouseover', function (event) {
-        held.left = false;
-        held.right = true;
-    }, false);
     right.addEventListener('touchstart', function (event) {
         held.left = false;
         held.right = true;
-    }, false);
-    right.addEventListener('mouseout', function (event) {
-        held.left = false;
-        held.right = false;
+        right.style.backgroundImage = "url('images/arrow-right-active.png')"
     }, false);
     right.addEventListener('touchend', function (event) {
         held.left = false;
         held.right = false;
+        right.style.backgroundImage = "url('images/arrow-right.png')"
     }, false);
 
 }
