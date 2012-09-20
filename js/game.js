@@ -61,7 +61,7 @@ player = {
     source_size:{w:32, h:32},
     target_size:{w:42, h:42},
     speed:{x:0, y:0},
-    spriteMap: new Image
+    spriteMap:new Image
 };
 
 
@@ -351,7 +351,7 @@ function updateCharacters() {
             } else if (held.right && actor.speed.y == 0) {
                 actor.speed.x += speed.player.velocity_x;
             }
-        } else if (Math.abs(actor.speed.x) < speed.player.velocity_x) {
+        } else if (Math.abs(actor.speed.x) < speed.player.speed_limit_x) {
             if (held.left) {
                 actor.speed.x -= speed.player.velocity_x_jump;
             } else if (held.right) {
@@ -374,10 +374,10 @@ function updateCharacters() {
 
         // apply speed limit
         if (Math.abs(actor.speed.x) > speed.player.speed_limit_x) {
-            actor.speed.x = speed.player.speed_limit_x * actor.speed.x / Math.abs(actor.speed.x)
+            actor.speed.x = speed.player.speed_limit_x * (actor.speed.x / Math.abs(actor.speed.x))
         }
         if (Math.abs(actor.speed.y) > speed.player.speed_limit_y) {
-            actor.speed.y = speed.player.speed_limit_y * actor.speed.y / Math.abs(actor.speed.y)
+            actor.speed.y = speed.player.speed_limit_y * (actor.speed.y / Math.abs(actor.speed.y))
         }
 
         actor.pos.x += actor.speed.x;
@@ -467,9 +467,7 @@ function updateCharacters() {
         }
 
         // apply friction
-        if (actor.speed.y == 0) {
-            actor.speed.x *= speed.player.friction;
-        }
+        actor.speed.x *= speed.player.friction;
 
     });
 }
