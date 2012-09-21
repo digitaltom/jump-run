@@ -457,12 +457,12 @@ function updateCharacters() {
             if (actor.pos.x > (size.canvas.w / 2)) {
                 scroll_x = 1;
             }
-        } else if (scroll_x >= current_level.width - size.canvas.w) {
+        } else if (scroll_x >= current_level.width - size.canvas.w && current_level.width > size.canvas.w) {
             scroll_x = current_level.width - size.canvas.w;
             if (actor.pos.x < current_level.width - (size.canvas.w / 2)) {
                 scroll_x = current_level.width - size.canvas.w - 1;
             }
-        } else {
+        } else if (current_level.width > size.canvas.w) {
             scroll_x += actor.speed.x;
         }
 
