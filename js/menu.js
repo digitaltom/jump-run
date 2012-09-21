@@ -12,11 +12,8 @@ document.getElementById("button-play1").addEventListener('click', function (even
 
 document.getElementById("button-play1").addEventListener('mouseover', function (event) {
     current_level = levels[2];
-    initializeLevel()
-    initializeTheme()
-    drawLevel()
+    load_level()
 }, false);
-
 
 document.getElementById("button-play2").addEventListener('click', function (event) {
     current_level = levels[0];
@@ -25,9 +22,7 @@ document.getElementById("button-play2").addEventListener('click', function (even
 
 document.getElementById("button-play2").addEventListener('mouseover', function (event) {
     current_level = levels[0];
-    initializeLevel()
-    initializeTheme()
-    drawLevel()
+    load_level()
 }, false);
 
 document.getElementById("button-play3").addEventListener('click', function (event) {
@@ -37,9 +32,7 @@ document.getElementById("button-play3").addEventListener('click', function (even
 
 document.getElementById("button-play3").addEventListener('mouseover', function (event) {
     current_level = levels[1];
-    initializeLevel()
-    initializeTheme()
-    drawLevel()
+    load_level()
 }, false);
 
 document.getElementById("button-play4").addEventListener('click', function (event) {
@@ -49,9 +42,7 @@ document.getElementById("button-play4").addEventListener('click', function (even
 
 document.getElementById("button-play4").addEventListener('mouseover', function (event) {
     current_level = levels[3];
-    initializeLevel()
-    initializeTheme()
-    drawLevel()
+    load_level()
 }, false);
 
 var start_menu = document.getElementById("game-menu");

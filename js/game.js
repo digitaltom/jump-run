@@ -673,11 +673,14 @@ function initGame() {
     ctx = canvas.getContext("2d");
 
     hideControls()
+    // draw initial level for menu background
+    load_level()
+    showStartMenu()
+}
+
+function load_level() {
     initializeLevel()
     initDimensions()
-    showStartMenu()
-
-    // draw initial level for menu background
     initializeTheme()
     drawLevel()
 }
