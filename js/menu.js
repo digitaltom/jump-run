@@ -35,15 +35,6 @@ document.getElementById("button-play3").addEventListener('mouseover', function (
     load_level()
 }, false);
 
-document.getElementById("button-play4").addEventListener('click', function (event) {
-    current_level = levels[3];
-    startGame();
-}, false);
-
-document.getElementById("button-play4").addEventListener('mouseover', function (event) {
-    current_level = levels[3];
-    load_level()
-}, false);
 
 var start_menu = document.getElementById("game-menu");
 
