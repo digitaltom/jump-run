@@ -5,7 +5,7 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
-var debug = true;
+var debug = false;
 
 // default theme and level
 var theme = 'snoop'
@@ -33,7 +33,7 @@ var frameTime = 0, lastLoop = new Date, thisLoop;
 var speed = {
     player:{
         velocity_x:1.5,
-        velocity_x_jump:1,
+        velocity_x_jump:1.5,
         velocity_y:25,
         gravity:2,
         friction:0.8,
