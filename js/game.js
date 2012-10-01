@@ -577,8 +577,8 @@ function drawControls() {
         ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h + 60);
         ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h + 80)
     }
-    ctx.font = 'bold 12px sans-serif'
-    ctx.fillText("Score: : " + score, size.tile.target.w, size.tile.target.h);
+    ctx.font = 'bold 14px sans-serif'
+    ctx.fillText("Score: " + score, size.tile.target.w, size.tile.target.h);
 
 }
 

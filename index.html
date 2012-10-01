@@ -9,6 +9,7 @@
     <title>Hackweek game</title>
 
     <link href="css/game.css" rel="stylesheet" type="text/css">
+    <link href="css/pad-controls.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -22,6 +23,7 @@
 
         <div class="menu-item menu-text" id="intro">
             <p>Welcome to Tom's HTML5 Jump&Run Framework.</p>
+
             <p>Please choose your level:</p>
         </div>
 
@@ -50,12 +52,21 @@
         </div>
     </div>
 
-    <div id="pad-controls">
-        <span id="control-left"/> </span>
-        <span id="control-up"> </span>
-        <span id="control-right"> </span>
 
+    <div id="pad-controls">
+        <div class="controls-wrapper controls-left">
+            <ul>
+                <li class="cross" id="control-up"></li>
+            </ul>
+        </div>
+        <div class="controls-wrapper controls-right">
+            <ul>
+                <li id="control-left"></li>
+                <li id="control-right"></li>
+            </ul>
+        </div>
     </div>
+
 
 </div>
 
