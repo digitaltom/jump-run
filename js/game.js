@@ -345,17 +345,19 @@ function updateCharacters() {
 
     actors.forEach(function (actor) {
 
-        if (actor.speed.y == 0) {
-            if (held.left && actor.speed.y == 0) {
-                actor.speed.x -= speed.player.velocity_x;
-            } else if (held.right && actor.speed.y == 0) {
-                actor.speed.x += speed.player.velocity_x;
-            }
-        } else if (Math.abs(actor.speed.x) < speed.player.speed_limit_x) {
-            if (held.left) {
-                actor.speed.x -= speed.player.velocity_x_jump;
-            } else if (held.right) {
-                actor.speed.x += speed.player.velocity_x_jump;
+        if (Math.abs(actor.speed.x) < speed.player.speed_limit_x) {
+            if (actor.speed.y == 0) {
+                if (held.left && actor.speed.y == 0) {
+                    actor.speed.x -= speed.player.velocity_x;
+                } else if (held.right && actor.speed.y == 0) {
+                    actor.speed.x += speed.player.velocity_x;
+                }
+            } else {
+                if (held.left) {
+                    actor.speed.x -= speed.player.velocity_x_jump;
+                } else if (held.right) {
+                    actor.speed.x += speed.player.velocity_x_jump;
+                }
             }
         }
         if (held.up && actor.speed.y == 0) {
@@ -364,6 +366,7 @@ function updateCharacters() {
         } else if (held.down) {
             // this only causes a duck animation, nothing happens in term of speed
         }
+        held.up = false
 
         animate_actor(actor);
 
@@ -576,6 +579,7 @@ function drawControls() {
     }
     ctx.font = 'bold 12px sans-serif'
     ctx.fillText("Score: : " + score, size.tile.target.w, size.tile.target.h);
+
 }
 
 
