@@ -9,6 +9,8 @@ body {
 
 #game {
     background-color: #5c94fc;
+    display: block;
+    margin: 0 auto;
 }
 
 #game-container {

@@ -5,7 +5,7 @@ var itemMap = new Image;
 var enemyMap = new Image;
 var actors;
 var items;
-var debug = true;
+var debug = false;
 
 // default theme and level
 var theme = 'snoop'

@@ -11,6 +11,7 @@ function is_touch_device() {
 
 function registerControls() {
     window.onkeydown = function (e) {
+        e.preventDefault();
         switch (e.keyCode) {
             case 37: // left
                 held.left = true;
@@ -36,6 +37,7 @@ function registerControls() {
     };
 
     window.onkeyup = function (e) {
+        e.preventDefault();
         switch (e.keyCode) {
             case 37: // left
                 held.left = false;
@@ -67,6 +69,14 @@ function registerControls() {
 
     // prevent scrolling
     document.body.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    }, false);
+
+    document.body.addEventListener('touchstart', function (event) {
+        event.preventDefault();
+    }, false);
+
+    document.body.addEventListener('touchend', function (event) {
         event.preventDefault();
     }, false);
 
