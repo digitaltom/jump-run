@@ -26,7 +26,7 @@ var collisionMap;
 
 // fps measurement
 var filterStrength = 20;
-var frameTime = 0, lastLoop = new Date, thisLoop, current_fps = 0;
+var frameTime = 0, lastLoop = new Date, thisLoop;
 
 
 // speed, gravity parameters
@@ -575,7 +575,7 @@ function drawControls() {
         }
         ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h + 40);
         ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h + 60);
-        ctx.fillText("Fps: " + current_fps, size.tile.target.w, size.tile.target.h + 80)
+        ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h + 80)
     }
     ctx.font = 'bold 14px sans-serif'
     ctx.fillText("Score: " + score, size.tile.target.w, size.tile.target.h);
@@ -659,7 +659,6 @@ function gameLoop() {
     ticks++;
     var thisFrameTime = (thisLoop = new Date) - lastLoop;
     frameTime += (thisFrameTime - frameTime) / filterStrength;
-    current_fps = (1000 / frameTime).toFixed(1);
     lastLoop = thisLoop;
 
     drawLevel();
@@ -668,35 +667,12 @@ function gameLoop() {
     drawActors();
     drawElements();
     drawControls();
-
-    gameInterval = requestAnimFrame(gameLoop);
 }
-
-
-requestAnimFrame = (function () {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-            window.setTimeout(callback, 1000 / speed.fps);
-        };
-})();
-
-window.cancelRequestAnimFrame = (function () {
-    return window.cancelAnimationFrame ||
-        window.webkitCancelRequestAnimationFrame ||
-        window.mozCancelRequestAnimationFrame ||
-        window.oCancelRequestAnimationFrame ||
-        window.msCancelRequestAnimationFrame ||
-        clearTimeout
-})();
 
 
 function initGame() {
 
-    cancelRequestAnimFrame(gameInterval)
+    window.clearInterval(gameInterval);
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
 
@@ -734,11 +710,12 @@ function startGame() {
     registerControls()
     initializeLevel()
     initializeTheme()
-    cancelRequestAnimFrame(gameInterval)
-    gameLoop();
+    window.clearInterval(gameInterval);
+    gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
 
 function restartGame() {
+    window.clearInterval(gameInterval)
     initGame()
     startGame()
 }
