@@ -1,8 +1,6 @@
 var ctx;
 var ticks = 0;
 var spriteMap = new Image;
-var itemMap = new Image;
-var enemyMap = new Image;
 var actors;
 var items;
 var debug = false;
@@ -648,8 +646,6 @@ function initializeLevel() {
 
 function initializeTheme() {
     spriteMap.src = 'themes/' + theme + '/images/game_tiles.png';
-    itemMap.src = 'themes/' + theme + '/images/item_tiles.png';
-    enemyMap.src = 'themes/' + theme + '/images/enemy_tiles.png';
     player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
     player.sprite.x = 0
     player.sprite.y = 32
