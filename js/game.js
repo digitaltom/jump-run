@@ -341,8 +341,8 @@ function updateElements() {
             }
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
             // turn around on collide or above edge
-            if (['z', 'x', 'a', 's', '#', 'H'].indexOf(sprite_collide) >= 0 ||
-                ['z', 'x', '#', '?', 'ß'].indexOf(sprite_bottom) < 0 || item.x <= 0) {
+            if ((blocks[sprite_collide] && blocks[sprite_collide].collide) ||
+                (!blocks[sprite_bottom] || !blocks[sprite_bottom].collide) || item.x <= 0) {
                 item.speed_x *= -1
             }
             item.x += item.speed_x

@@ -16,7 +16,6 @@ function getLevelSprite(pos, line) {
     return current_level.level[line].charAt(pos);
 }
 
-
 var blocks = {};
 blocks['#'] = {sx: 5, sy: 0, collide: true};
 blocks['x'] = {sx: 0, sy: 0, collide: true};
