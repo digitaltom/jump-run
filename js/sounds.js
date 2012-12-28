@@ -1,24 +1,38 @@
+var sounds = {}
+
+function preload_sounds() {
+    if (sounds[theme] == null) {
+        sounds[theme] = {}
+        sounds[theme]['theme'] = new Audio("themes/" + theme + "/sounds/theme.mp3")
+        sounds[theme]['jump'] = new Audio("themes/" + theme + "/sounds/jump.mp3")
+        sounds[theme]['jump_on_enemy'] = new Audio("themes/" + theme + "/sounds/jump_on_enemy.mp3")
+        sounds[theme]['coin'] = new Audio("themes/" + theme + "/sounds/coin.mp3")
+        sounds[theme]['dead'] = new Audio("themes/" + theme + "/sounds/die.mp3")
+        sounds[theme]['success'] = new Audio("themes/" + theme + "/sounds/success.mp3")
+    }
+}
+
+
 function sound_theme() {
-    snd = new Audio("themes/" + theme + "/music/theme.wav")
-    snd.play()
+    sounds[theme]['theme'].play()
 }
 
 function sound_coin() {
-    snd = new Audio("themes/" + theme + "/music/coin.wav")
-    snd.play()
+    sounds[theme]['coin'].play()
 }
 
 function sound_dead() {
-    snd = new Audio("themes/" + theme + "/music/dead.wav")
-    snd.play()
+    sounds[theme]['dead'].play()
 }
 
 function sound_jump() {
-    snd = new Audio("themes/" + theme + "/music/jump.wav")
-    snd.play()
+    sounds[theme]['jump'].play()
 }
 
 function sound_jump_on_enemy() {
-    snd = new Audio("themes/" + theme + "/music/jump_on_enemy.wav")
-    snd.play()
+    sounds[theme]['jump_on_enemy'].play()
+}
+
+function sound_success() {
+    sounds[theme]['success'].play()
 }

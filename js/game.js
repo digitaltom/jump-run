@@ -414,6 +414,7 @@ function gameOver() {
 }
 
 function levelWin() {
+    sound_success()
     // todo:  winning animation
     actors = [];
     // todo: level done menu
@@ -439,6 +440,7 @@ function initializeTheme() {
     player.spriteMap.src = 'themes/' + theme + '/images/player_sprites.png';
     player.sprite.x = 0
     player.sprite.y = 32
+    preload_sounds()
 }
 
 function gameLoop() {
@@ -495,6 +497,7 @@ function startGame() {
     registerControls()
     initializeLevel()
     initializeTheme()
+    sound_theme()
     window.clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, 1000 / speed.fps);
 }
