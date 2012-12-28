@@ -27,6 +27,7 @@ blocks['a'] = {sx: 0, sy: 3, collide: true};
 blocks['s'] = {sx: 1, sy: 3, collide: true};
 blocks['z'] = {sx: 9, sy: 9, collide: true};
 blocks['8'] = {sx: 0, sy: 6, collide: true};
+blocks['µ'] = {sx: 13, sy: 13, collide: true, type: 'hidden_block'};
 blocks['ß'] = {sx: 1, sy: 11, collide: true};
 blocks['?'] = {sx: 0, sy: 11, collide: true, type: 'block_coin'};
 blocks['B'] = {sx: 1, sy: 6, collide: true, type: 'exit'};
