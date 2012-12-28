@@ -359,7 +359,8 @@ function drawControls() {
         ctx.font = '12px edunline'
         if (actor) {
             ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
-                ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h + 20);
+                ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y) +
+                ", animation sprite x/y: " + actor.sprite.x + '/' + actor.sprite.y, size.tile.target.w, size.tile.target.h + 20);
         }
         ctx.fillText("Scroll: " + Math.round(scroll_x) + "px - tile#: " + Math.round(scroll_x / size.tile.target.w), size.tile.target.w, size.tile.target.h + 40);
         ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h + 60);
@@ -441,6 +442,7 @@ function initializeTheme() {
     player.sprite.x = 0
     player.sprite.y = 32
     preload_sounds()
+    document.getElementById('game').style.backgroundColor = current_level.background;
 }
 
 function gameLoop() {

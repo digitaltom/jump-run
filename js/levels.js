@@ -2,11 +2,12 @@ var levels = [
     {
         name:"Level 0",
         theme:'snoop',
+        background: '#8d8bb3',
         template:[
-            "  123                                       ##",
+            "  123    j                                  ##",
             "  456                                         ",
-            "           #######   ()                       ",
-            "                     []                       ",
+            "           #######   ()   z                   ",
+            "                     []    z                  ",
             "  #####                                       ",
             "          ####                                ",
             "                                              ",
@@ -19,6 +20,7 @@ var levels = [
     {
         name:"SUSE",
         theme:'suse',
+        background: '#207720',
         template:[
             "                                    p                                              ",
             "  123                 zzzzzz     zzzzzzzz    zzzzzz    zzzzz                       ",
@@ -30,15 +32,16 @@ var levels = [
             "         zzz?z                      ?zzz zzzz z?zz zzzz                            ",
             "                                                                                   ",
             "                 p            p                 p p p                              ",
-            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz                        ",
-            "   ^                                                                               ",
-            "  /ü`                                                                        B     ",
+            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz                  Z     ",
+            "   ^                                                                        ZZZ    ",
+            "  /ü`                                                                       ZBZ    ",
             "88888888888@@@@@@@@@@@@@@@@@@@@@@88888888888888888888888888888888888888888888888888"
         ]
     },
     {
         name:"Mario Level 1",
         theme:'super_mario',
+        background: '#5c94fc',
         template:[
             "      13           13      1223                                              13                                                                                                                                                                     ",
             "      46           46      4556           13                  13             46      1223                                13                                                                    13                                     13            ",
