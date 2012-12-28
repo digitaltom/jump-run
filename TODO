@@ -1,11 +1,17 @@
 - die animation
 - iphone fullscreen
 - sounds + preload
-- font
 - theme initializer
 - avoid double jumps
 - License
 - vertical scroll?
-- different background colors
+- different background colors (image)
+- startscreen image
+- factor out sprite mapping
+- invisible steps
+- geeko exit
+
+- release! blog entry
+
 
 

@@ -3,7 +3,7 @@ var ticks = 0;
 var spriteMap = new Image;
 var actors;
 var items;
-var debug = false;
+var debug = true;
 
 // default theme and level
 var theme = 'snoop'
@@ -577,7 +577,7 @@ function updateElements() {
 function drawControls() {
     if (debug) {
         var actor = actors[0];
-        ctx.font = '12px sans-serif'
+        ctx.font = '12px edunline'
         if (actor) {
             ctx.fillText("Player: x/y: " + Math.round(actor.pos.x) + "/" + Math.round(actor.pos.y) +
                 ", speed x/y: " + Math.round(actor.speed.x) + "/" + Math.round(actor.speed.y), size.tile.target.w, size.tile.target.h + 20);
@@ -586,7 +586,7 @@ function drawControls() {
         ctx.fillText("Objects: " + (collisionMap.length + items.length), size.tile.target.w, size.tile.target.h + 60);
         ctx.fillText("Fps: " + (1000 / frameTime).toFixed(1), size.tile.target.w, size.tile.target.h + 80)
     }
-    ctx.font = 'bold 14px sans-serif'
+    ctx.font = 'bold 14px edunline'
     ctx.fillText("Score: " + score, size.tile.target.w, size.tile.target.h);
 
 }
