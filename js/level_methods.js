@@ -16,222 +16,59 @@ function getLevelSprite(pos, line) {
     return current_level.level[line].charAt(pos);
 }
 
-function getLevelObject(character, index_x, index_y) {
 
-    var object = { sx:null, sy:null, deadly:false };
-    /* used characters: # x H k h / ^ ü g ` { = } @ 1 2 3 4 5 6 ?
-     *                   ß q w a s b p \ ° R | * W U B O X l j ( ) [ ]]
-     *                   z 8 */
-    switch (character) {
-        case '#':
-            object.sx = 5;
-            object.sy = 0;
-            collisionMap.push(object);
-            break;
-        case 'x':
-            object.sx = 0;
-            object.sy = 0;
-            collisionMap.push(object);
-            break;
-        case 'H':
-            object.sx = 2;
-            object.sy = 2;
-            collisionMap.push(object);
-            break;
-        case 'k':
-            object.sx = 6;
-            object.sy = 0;
-            collisionMap.push(object);
-            break;
-        case 'h':
-            object.sx = 12;
-            object.sy = 6;
-            object.deadly = true;
-            collisionMap.push(object);
-            break;
-        case '/':
-            object.sx = 0;
-            object.sy = 1;
-            break;
-        case '^':
-            object.sx = 1;
-            object.sy = 0;
-            break;
-        case 'ü':
-            object.sx = 1;
-            object.sy = 1;
-            break;
-        case 'g':
-            object.sx = 4;
-            object.sy = 1;
-            break;
-        case '`':
-            object.sx = 2;
-            object.sy = 1;
-            break;
-        case '{':
-            object.sx = 2;
-            object.sy = 0;
-            break;
-        case '=':
-            object.sx = 3;
-            object.sy = 0;
-            break;
-        case '}':
-            object.sx = 4;
-            object.sy = 0;
-            break;
-        case '@':
-            object.sx = 9;
-            object.sy = 2;
-            object.deadly = true;
-            collisionMap.push(object);
-            break;
-        case '1':
-            object.sx = 0;
-            object.sy = 7;
-            break;
-        case '2':
-            object.sx = 1;
-            object.sy = 7;
-            break;
-        case '3':
-            object.sx = 2;
-            object.sy = 7;
-            break;
-        case '4':
-            object.sx = 0;
-            object.sy = 8;
-            break;
-        case '5':
-            object.sx = 1;
-            object.sy = 8;
-            break;
-        case '6':
-            object.sx = 2;
-            object.sy = 8;
-            break;
-        case '?':
-            object.sx = 0;
-            object.sy = 11;
-            object.type = 'block_coin'
-            collisionMap.push(object);
-            break;
-        case 'ß':
-            object.sx = 1;
-            object.sy = 11;
-            collisionMap.push(object);
-            break;
-        case 'q':
-            object.sx = 0;
-            object.sy = 2;
-            collisionMap.push(object);
-            break;
-        case 'w':
-            object.sx = 1;
-            object.sy = 2;
-            collisionMap.push(object);
-            break;
-        case 'a':
-            object.sx = 0;
-            object.sy = 3;
-            collisionMap.push(object);
-            break;
-        case 's':
-            object.sx = 1;
-            object.sy = 3;
-            collisionMap.push(object);
-            break;
-        case 'b':
-            object.sx = 13;
-            object.sy = 4;
-            break;
-        case 'p':
-            object.sx = 0;
-            object.sy = 12;
-            object.deadly = true;
-            object.type = "enemy_mushroom"
-            object.speed_x = 4
-            items.push(object);
-            replaceLevelSprite(index_x, index_y - line_offset_y, " ");
-            break;
-        case '\'':
-            object.sx = 2;
-            object.sy = 3;
-            break;
-        case '°':
-            object.sx = 3;
-            object.sy = 2;
-            break;
-        case 'R':
-            object.sx = 3;
-            object.sy = 3;
-            break;
-        case '|':
-            object.sx = 3;
-            object.sy = 4;
-            break;
-        case '*':
-            object.sx = 1;
-            object.sy = 4;
-            break;
-        case 'W':
-            object.sx = 0;
-            object.sy = 4;
-            break;
-        case 'U':
-            object.sx = 2;
-            object.sy = 6;
-            break;
-        case 'B':
-            object.sx = 1;
-            object.sy = 6;
-            object.type = 'exit'
-            collisionMap.push(object);
-            break;
-        case 'O':
-            object.sx = 1;
-            object.sy = 5;
-            break;
-        case 'X':
-            object.sx = 2;
-            object.sy = 4;
-            break;
-        case 'l':
-            object.sx = 0;
-            object.sy = 5;
-            break;
-        case 'j':
-            object.sx = 2;
-            object.sy = 5;
-            break;
-        case '(':
-            object.sx = 11;
-            object.sy = 0;
-            break;
-        case ')':
-            object.sx = 12;
-            object.sy = 0;
-            break;
-        case '[':
-            object.sx = 11;
-            object.sy = 1;
-            break;
-        case ']':
-            object.sx = 12;
-            object.sy = 1;
-            break;
-        case 'z':
-            object.sx = 9;
-            object.sy = 9;
-            collisionMap.push(object);
-            break;
-        case '8':
-            object.sx = 0;
-            object.sy = 6;
-            collisionMap.push(object);
-            break;
-        default:
-    }
-    return object;
+var blocks = {};
+blocks['#'] = {sx: 5, sy: 0, collide: true};
+blocks['x'] = {sx: 0, sy: 0, collide: true};
+blocks['H'] = {sx: 2, sy: 2, collide: true};
+blocks['k'] = {sx: 6, sy: 0, collide: true};
+blocks['q'] = {sx: 0, sy: 2, collide: true};
+blocks['w'] = {sx: 1, sy: 2, collide: true};
+blocks['a'] = {sx: 0, sy: 3, collide: true};
+blocks['s'] = {sx: 1, sy: 3, collide: true};
+blocks['z'] = {sx: 9, sy: 9, collide: true};
+blocks['8'] = {sx: 0, sy: 6, collide: true};
+blocks['ß'] = {sx: 1, sy: 11, collide: true};
+blocks['?'] = {sx: 0, sy: 11, collide: true, type: 'block_coin'};
+blocks['B'] = {sx: 1, sy: 6, collide: true, type: 'exit'};
+blocks['h'] = {sx: 12, sy: 6, collide: true, deadly: true};
+blocks['@'] = {sx: 9, sy: 2, collide: true, deadly: true};
+blocks['p'] = {sx: 0, sy: 12, deadly: true, type: 'enemy_mushroom', speed_x: 4};
+blocks['/'] = {sx: 0, sy: 1};
+blocks['^'] = {sx: 1, sy: 0};
+blocks['ü'] = {sx: 1, sy: 1};
+blocks['g'] = {sx: 4, sy: 1};
+blocks['`'] = {sx: 2, sy: 1};
+blocks['{'] = {sx: 2, sy: 0};
+blocks['='] = {sx: 3, sy: 0};
+blocks['}'] = {sx: 4, sy: 0};
+blocks['1'] = {sx: 0, sy: 7};
+blocks['2'] = {sx: 1, sy: 7};
+blocks['3'] = {sx: 2, sy: 7};
+blocks['4'] = {sx: 0, sy: 8};
+blocks['5'] = {sx: 1, sy: 8};
+blocks['6'] = {sx: 2, sy: 8};
+blocks['b'] = {sx: 13, sy: 4};
+blocks['\''] = {sx: 2, sy: 3};
+blocks['°'] = {sx: 3, sy: 2};
+blocks['R'] = {sx: 3, sy: 3};
+blocks['|'] = {sx: 3, sy: 4};
+blocks['*'] = {sx: 1, sy: 4};
+blocks['W'] = {sx: 0, sy: 4};
+blocks['U'] = {sx: 2, sy: 6};
+blocks['O'] = {sx: 1, sy: 5};
+blocks['X'] = {sx: 2, sy: 4};
+blocks['l'] = {sx: 0, sy: 5};
+blocks['j'] = {sx: 2, sy: 5};
+blocks['('] = {sx: 11, sy: 0};
+blocks[')'] = {sx: 12, sy: 0};
+blocks['['] = {sx: 11, sy: 1};
+blocks[']'] = {sx: 12, sy: 1};
+blocks['j'] = {sx: 2, sy: 5};
+
+
+
+function getLevelObject(character, index_x, index_y) {
+    var object = blocks[character];
+    return object
 }

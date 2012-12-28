@@ -72,6 +72,15 @@ Number.prototype.inRange = function (a, b) {
     return ( n >= a && n <= b );
 };
 
+Object.prototype.clone = function() {
+    var copy = this.constructor();
+    for (var attr in this) {
+        if (this.hasOwnProperty(attr)) copy[attr] = this[attr];
+    }
+    return copy;
+};
+
+
 
 function drawLevel() {
 
@@ -103,10 +112,17 @@ function drawLevel() {
 
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
                 var object = getLevelObject(linecontent.charAt(index_x), index_x, index_y);
-                if (object.sx != null && object.sy != null) {
+                if (object) {
                     object.x = index_x * tw - offset_x
                     object.y = index_y * th
                     ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start * tw, object.y, tw, th);
+                    if (object.collide) {
+                        collisionMap.push(object.clone());
+                    }
+                    if (object.type == 'enemy_mushroom') {
+                        items.push(object.clone());
+                        replaceLevelSprite(index_x, index_y - line_offset_y, " ");
+                    }
                 }
             }
         }
