@@ -20,19 +20,20 @@ var levels = [
         name:"SUSE",
         theme:'suse',
         template:[
-            "  123                 ######     ########    ######    #####  ",
-            "  456                                                         ",
-            "           #######                  #### #  # #### ####       ",
-            "                                    #    #  # #    #          ",
-            "  zzzzz                             #### #  # #### ###        ",
-            "                      ######           # #  #    # #          ",
-            "         zzz?z                      #### #### #### ####       ",
-            "                                                              ",
-            "                 p            p                               ",
-            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    ######################   ",
-            "   ^                                                          ",
-            "  /ü`                                                         ",
-            "xxxxxxxxxxx@@@@@@@@@@@@@@@@@@@@@@xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            "                                    p                                              ",
+            "  123                 zzzzzz     zzzzzzzz    zzzzzz    zzzzz                       ",
+            "  456                                                                              ",
+            "           zzzzzzz                  zzzz z  z zzzz zzzz                            ",
+            "                                    z    z  z z    z                               ",
+            "  zzzzz                             zzzz z  z zzzz zz?                             ",
+            "                      zzz??z           z z  z    z z                               ",
+            "         zzz?z                      ?zzz zzzz z?zz zzzz                            ",
+            "                                                                                   ",
+            "                 p            p                 p p p                              ",
+            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz                        ",
+            "   ^                                                                               ",
+            "  /ü`                                                                        B     ",
+            "88888888888@@@@@@@@@@@@@@@@@@@@@@88888888888888888888888888888888888888888888888888"
         ]
     },
     {

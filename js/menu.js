@@ -5,35 +5,42 @@ function hideMenus() {
 
 // Main menu
 
-document.getElementById("button-play1").addEventListener('click', function (event) {
-    current_level = levels[2];
-    startGame();
-}, false);
+var button;
+if (button = document.getElementById("button-play1")) {
+    button.addEventListener('click', function (event) {
+        current_level = levels[2];
+        startGame();
+    }, false);
 
-document.getElementById("button-play1").addEventListener('mouseover', function (event) {
-    current_level = levels[2];
-    load_level()
-}, false);
+    button.addEventListener('mouseover', function (event) {
+        current_level = levels[2];
+        load_level()
+    }, false);
+}
 
-document.getElementById("button-play2").addEventListener('click', function (event) {
-    current_level = levels[0];
-    startGame();
-}, false);
+if (button = document.getElementById("button-play2")) {
+    button.addEventListener('click', function (event) {
+        current_level = levels[0];
+        startGame();
+    }, false);
 
-document.getElementById("button-play2").addEventListener('mouseover', function (event) {
-    current_level = levels[0];
-    load_level()
-}, false);
+    button.addEventListener('mouseover', function (event) {
+        current_level = levels[0];
+        load_level()
+    }, false);
+}
 
-document.getElementById("button-play3").addEventListener('click', function (event) {
-    current_level = levels[1];
-    startGame();
-}, false);
+if (button = document.getElementById("button-play3")) {
+    button.addEventListener('click', function (event) {
+        current_level = levels[1];
+        startGame();
+    }, false);
 
-document.getElementById("button-play3").addEventListener('mouseover', function (event) {
-    current_level = levels[1];
-    load_level()
-}, false);
+    button.addEventListener('mouseover', function (event) {
+        current_level = levels[1];
+        load_level()
+    }, false);
+}
 
 
 var start_menu = document.getElementById("game-menu");

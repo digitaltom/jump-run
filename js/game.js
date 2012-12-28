@@ -7,7 +7,7 @@ var debug = false;
 
 // default theme and level
 var theme = 'snoop'
-var current_level = levels[2];
+var current_level = levels[1];
 
 var gameInterval;
 var score
@@ -127,7 +127,7 @@ function drawLevel() {
 
                 /* used characters: # x H k h / ^ ü g ` { = } @ 1 2 3 4 5 6 ?
                 *                   ß q w a s b p \ ° R | * W U B O X l j ( ) [ ]]
-                *                   z */
+                *                   z 8 */
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -330,6 +330,11 @@ function drawLevel() {
                     case 'z':
                         object.sx = 9;
                         object.sy = 9;
+                        collisionMap.push(object);
+                        break;
+                    case '8':
+                        object.sx = 0;
+                        object.sy = 6;
                         collisionMap.push(object);
                         break;
                     default:
@@ -646,7 +651,7 @@ function initializeLevel() {
     score = 0
     player.pos.x = 2 * size.tile.target.w
     player.pos.y = 5 * size.tile.target.h
-    scroll_x = player.pos.x - size.canvas.w / 2
+    scroll_x = player.pos.x - (document.documentElement.clientWidth - 4) / 2
     theme = current_level.theme
 }
 
