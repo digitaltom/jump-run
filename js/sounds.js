@@ -7,7 +7,7 @@ function preload_sounds() {
         sounds[theme]['jump'] = new Audio("themes/" + theme + "/sounds/jump.mp3")
         sounds[theme]['jump_on_enemy'] = new Audio("themes/" + theme + "/sounds/jump_on_enemy.mp3")
         sounds[theme]['coin'] = new Audio("themes/" + theme + "/sounds/coin.mp3")
-        sounds[theme]['dead'] = new Audio("themes/" + theme + "/sounds/die.mp3")
+        sounds[theme]['dead'] = new Audio("themes/" + theme + "/sounds/dead.mp3")
         sounds[theme]['success'] = new Audio("themes/" + theme + "/sounds/success.mp3")
     }
 }
