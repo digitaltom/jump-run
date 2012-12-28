@@ -124,6 +124,10 @@ function drawLevel() {
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
 
                 var object = { sx:null, sy:null, x:((index_x) * tw) - offset_x, y:index_y * th, deadly:false, solid:true };
+
+                /* used characters: # x H k h / ^ ü g ` { = } @ 1 2 3 4 5 6 ?
+                *                   ß q w a s b p \ ° R | * W U B O X l j ( ) [ ]]
+                *                   z */
                 switch (linecontent.charAt(index_x)) {
                     case '#':
                         object.sx = 5;
@@ -149,7 +153,6 @@ function drawLevel() {
                         object.sx = 12;
                         object.sy = 6;
                         object.deadly = true;
-                        object.solid = false;
                         collisionMap.push(object);
                         break;
                     case '/':
@@ -323,6 +326,11 @@ function drawLevel() {
                     case ']':
                         object.sx = 12;
                         object.sy = 1;
+                        break;
+                    case 'z':
+                        object.sx = 9;
+                        object.sy = 9;
+                        collisionMap.push(object);
                         break;
                     default:
                 }
@@ -548,11 +556,9 @@ function updateElements() {
                 sprite_collide = getLevelSpriteXY(item.x, item.y)
             }
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
-            if (sprite_collide == "x" || sprite_collide == "a" || sprite_collide == "s" || sprite_collide == "#" || sprite_collide == "H" ||
-                item.x <= 0) {
-                item.speed_x *= -1
-            }
-            if (sprite_bottom != "x" && sprite_bottom != "#" && sprite_bottom != "?" && sprite_bottom != "ß") {
+            // turn around on collide or above edge
+            if (['z', 'x', 'a', 's', '#', 'H'].indexOf(sprite_collide) >= 0 ||
+                ['z', 'x', '#', '?', 'ß'].indexOf(sprite_bottom) < 0 || item.x <= 0) {
                 item.speed_x *= -1
             }
             item.x += item.speed_x
