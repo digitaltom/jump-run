@@ -46,6 +46,7 @@ if (button = document.getElementById("button-play3")) {
 var start_menu = document.getElementById("game-menu");
 
 function showStartMenu() {
+    hideControls()
     start_menu.style.visibility = "visible";
 }
 
@@ -61,7 +62,6 @@ document.getElementById("button-restart").addEventListener('click', function (ev
 }, false);
 
 document.getElementById("button-menu").addEventListener('click', function (event) {
-    hideGameOver()
     initGame()
     showStartMenu()
 }, false);

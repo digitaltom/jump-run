@@ -2,10 +2,29 @@
 
 function hideControls() {
     document.getElementById("pad-controls").style.visibility = "hidden"
+    enable_default_touch()
 }
 
 function is_touch_device() {
     return !!('ontouchstart' in window);
+}
+
+function preventDefault(event) {
+  event.preventDefault();
+}
+
+// prevent scrolling etc
+function disable_default_touch() {
+    document.body.addEventListener('touchmove', preventDefault, false);
+    document.body.addEventListener('touchstart', preventDefault, false);
+    document.body.addEventListener('touchend', preventDefault, false);
+}
+
+// re-enable touch events for menu
+function enable_default_touch() {
+    document.body.removeEventListener('touchmove', preventDefault, false);
+    document.body.removeEventListener('touchstart', preventDefault, false);
+    document.body.removeEventListener('touchend', preventDefault, false);
 }
 
 
@@ -67,18 +86,9 @@ function registerControls() {
         document.getElementById("pad-controls").style.visibility = "visible"
     }
 
-    // prevent scrolling
-    document.body.addEventListener('touchmove', function (event) {
-        event.preventDefault();
-    }, false);
+    // prevent scrolling etc
+    disable_default_touch()
 
-    document.body.addEventListener('touchstart', function (event) {
-        event.preventDefault();
-    }, false);
-
-    document.body.addEventListener('touchend', function (event) {
-        event.preventDefault();
-    }, false);
 
     var left = document.getElementById("control-left");
     left.addEventListener('touchstart', function (event) {

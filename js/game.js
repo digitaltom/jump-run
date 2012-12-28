@@ -457,11 +457,10 @@ function gameLoop() {
 
 
 function initGame() {
-
     window.clearInterval(gameInterval);
     var canvas = document.getElementById("game");
     ctx = canvas.getContext("2d");
-
+    hideMenus()
     hideControls()
     // draw initial level for menu background
     load_level()
