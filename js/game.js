@@ -63,8 +63,8 @@ player = {
 };
 
 
-String.prototype.replaceAt = function (index, char) {
-    return this.substr(0, index) + char + this.substr(index + char.length);
+String.prototype.replaceAt = function (index, characters) {
+    return this.substr(0, index) + characters + this.substr(index + characters.length);
 }
 
 Number.prototype.inRange = function (a, b) {
