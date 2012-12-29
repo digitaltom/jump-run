@@ -3,10 +3,10 @@ var ticks = 0;
 var spriteMap = new Image;
 var actors;
 var items;
-var debug = true;
+var debug = false;
 
 // default theme and level
-var theme = 'snoop'
+var theme = 'suse'
 var current_level = levels[1];
 
 var gameInterval;
