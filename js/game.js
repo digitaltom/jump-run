@@ -122,6 +122,9 @@ function drawLevel() {
                     if (object.type == 'enemy_mushroom') {
                         items.push(object.clone());
                         replaceLevelSprite(index_x, index_y - line_offset_y, " ");
+                    } else if (object.type == 'coin') {
+                        items.push(object.clone());
+                        replaceLevelSprite(index_x, index_y - line_offset_y, " ");
                     }
                 }
             }
@@ -199,7 +202,7 @@ function updateCharacters() {
             if (collides.top) {
                 if (object.type == 'block_coin') {
                     replaceLevelSpriteXY(object.x, object.y, "ß");
-                    items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), deadly:false, type:'coin' });
+                    items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), type:'coin' });
                 }
             }
             if (collides.bottom) {
@@ -342,7 +345,7 @@ function updateElements() {
             sprite_bottom = getLevelSpriteXY(item.x + size.tile.target.w / 2, item.y + size.tile.target.h)
             // turn around on collide or above edge
             if ((blocks[sprite_collide] && blocks[sprite_collide].collide) ||
-                (!blocks[sprite_bottom] || !blocks[sprite_bottom].collide) || item.x <= 0) {
+                (!blocks[sprite_bottom] || !blocks[sprite_bottom].collide || blocks[sprite_bottom].deadly) || item.x <= 0) {
                 item.speed_x *= -1
             }
             item.x += item.speed_x

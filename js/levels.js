@@ -15,7 +15,7 @@ var levels = [
             "                ?     #?#?#                       qw          qw                     #?#                      #        #k     ?  ?  ?      #           ##           H  H         HH  H                ##?#          HHHHHH         |    lXj         ",
             "    ^                                     qw      as    ^     as                                                 ^                                                 HH  HH   ^   HHH  HH                            HHHHHHH     ^   |   WUUUW        ",
             "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                          HHH  HHH /ü` HHHH  HHH    ^   qw             qw HHHHHHHH    /ü`  |   XXOXX  ^     ",
-            "  /ügü`      {=} /ü`  p          as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`p p  p p         HHHH==HHHHügüHHHHH  HHHH} /ü`  as   {=}   p p asHHHHHHHHH   /ügü` H   XXBXX}/ü`    ",
+            "  /ügü`      {=} /ü`          p  as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`p p  p p         HHHH==HHHHügüHHHHH  HHHH} /ü`  as   {=}   p p asHHHHHHHHH   /ügü` H   XXBXX}/ü`    ",
             "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         ]
     },
@@ -24,20 +24,20 @@ var levels = [
         theme:'suse',
         background: '#207720',
         template:[
-            "                                    p                                              ",
-            "  123                 zzzzzz     zzzzzzzz    zzzzzz    zzzzz                       ",
-            "  456                                                                              ",
-            "           zzzzzzz                  zzzz z  z zzzz zzzz                            ",
-            "                                    z    z  z z    z                               ",
-            "  zzzzz                             zzzz z  z zzzz zz?                             ",
-            "                      zzz??z           z z  z    z z                               ",
-            "         µµµ?µ                      ?zzz zzzz z?zz zzzz                            ",
-            "                                                                                   ",
-            "                 p            p                 p p p                              ",
-            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz                  Z     ",
-            "   ^                                                                        ZZZ    ",
-            "  /ü`                                                                       ZBZ    ",
-            "88888888888@@@@@@@@@@@@@@@@@@@@@@88888888888888888888888888888888888888888888888888"
+            "                                    p         cccc      ccc                                                    ",
+            "  123                 µµµµµµ     zzzzzzzz    zzzzzz    zzzzz      µµµµ                                         ",
+            "  456       cc                                                              µµµµ                               ",
+            "           zzzzzzz                  zzzz z  z zzzz zzzz                                                        ",
+            "                                    z    z  z z    z                                 8888                      ",
+            "  zzzzz                             zzzz z  z zzzz zz?                                                         ",
+            "                      zzz??z           z z  z    z z                           888                             ",
+            "         zzz?z                      ?zzz zzzz z?zz zzzz                                                        ",
+            "                                                                         zzz                                   ",
+            "                 p            p                 p p p                                                          ",
+            "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz        zzzz                                  Z     ",
+            "   ^                                                                                                    ZZZ    ",
+            "  /ü`                                                                     p         p                   ZBZ    ",
+            "88888888888@@@@@@@@@@@@@@@@@@@@@@88888888888888888888888888888888888@@888888888888888888@@@@@@@@@88888888888888888888888888888"
         ]
     },
     {
