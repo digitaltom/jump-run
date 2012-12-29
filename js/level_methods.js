@@ -66,6 +66,7 @@ blocks['['] = {sx: 11, sy: 1};
 blocks[']'] = {sx: 12, sy: 1};
 blocks['j'] = {sx: 2, sy: 5};
 blocks['Z'] = {sx: 9, sy: 9};
+blocks['f'] = {sx: 12, sy: 2};
 
 
 

@@ -4,17 +4,19 @@ var levels = [
         theme:'snoop',
         background: '#8d8bb3',
         template:[
-            "  123    j                                  ##",
-            "  456                                         ",
-            "           #######   ()   z                   ",
-            "                     []    z                  ",
-            "  #####                                       ",
-            "          ####                                ",
-            "            p        p                        ",
-            "  ~~~~  ??????????????????????   #############",
-            "   ^                                          ",
-            "  /ü`                                         ",
-            "xxxxxxxxxxxxxxxxxxxxxxxx"
+            "      13           ()      1223                                              ()                                                                                                                        f                                            ",
+            "      46           []      4556           ()                  13      j j    []      1223                              j 13          f                       f                                 13                       jjj           13            ",
+            "             j                            []    f             46       j             4556                             j  46                      1223                 j                ()      46          1223                       46            ",
+            "                                                                                                 p                                               4556                  j               []                  4556                                 f   ",
+            "                        ?                            j               j                     #########     #####?                               ###     #??#                                                              HH         °                ",
+            "                                                                                                                                                                                                                       HHH        'R                ",
+            "                                   j                                                                                                                                                                                  HHHH         |     *          ",
+            "                                                                           k          p                                                                                                                              HHHHH         |    WWW         ",
+            "                ?     #?#?#                       qw          qw                     #?#                      #        #k     ?  ?  ?      #           ##           H  H         HH  H                ##?#          HHHHHH         |    lXj         ",
+            "    ^                                     qw      as    ^     as                                                 ^                                                 HH  HH   ^   HHH  HH                            HHHHHHH     ^   |   WUUUW        ",
+            "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                          HHH  HHH /ü` HHHH  HHH    ^   qw             qw HHHHHHHH    /ü`  |   XXOXX  ^     ",
+            "  /ügü`      {=} /ü`  p          as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`p p  p p         HHHH==HHHHügüHHHHH  HHHH} /ü`  as   {=}   p p asHHHHHHHHH   /ügü` H   XXBXX}/ü`    ",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         ]
     },
     {
