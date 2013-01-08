@@ -54,12 +54,13 @@ var size = {
 };
 
 player = {
-    pos:{x:0, y:0},
-    sprite:{x:0, y:32},
-    source_size:{w:32, h:32},
-    target_size:{w:42, h:42},
-    speed:{x:0, y:0},
-    spriteMap:new Image
+    pos: {x:0, y:0},
+    sprite: {x:0, y:32},
+    source_size: {w:32, h:32},
+    target_size: {w:42, h:42},
+    speed: {x:0, y:0},
+    spriteMap: new Image,
+    lives: 3
 };
 
 
@@ -371,7 +372,7 @@ function drawControls() {
     }
     ctx.font = 'bold 14px edunline'
     ctx.fillText("Score: " + score, size.tile.target.w, size.tile.target.h);
-
+    ctx.fillText(player.lives + " Lives", size.canvas.w - 3 * size.tile.target.w, size.tile.target.h);
 }
 
 
@@ -411,10 +412,14 @@ function drawElements() {
 
 
 function gameOver() {
-    // todo: dying animation
-    actors = []
     sound_dead()
-    showGameOver()
+    if (--player.lives > 0) {
+       player.pos.x -= 30
+    } else {
+        // todo: dying animation
+        actors = []
+        showGameOver()
+    }
 }
 
 function levelWin() {
@@ -432,11 +437,21 @@ function initializeLevel() {
     items = []
     collisionMap = []
     actors = [player];
-    score = 0
-    player.pos.x = 2 * size.tile.target.w
-    player.pos.y = 5 * size.tile.target.h
+    resetPlayer()
     scroll_x = player.pos.x - (document.documentElement.clientWidth - 4) / 2
     theme = current_level.theme
+}
+
+function resetPlayer() {
+    player.lives = 3
+    score = 0
+    if (startpos = getLevelSpritePositions('y')[0]) {
+        player.pos.x = getLevelSpritePositions('y')[0].x * size.tile.target.w
+        player.pos.y = (getLevelSpritePositions('y')[0].y + line_offset_y) * size.tile.target.h
+    } else {
+        player.pos.x = 2 * size.tile.target.w
+        player.pos.y = 5 * size.tile.target.h
+    }
 }
 
 function initializeTheme() {

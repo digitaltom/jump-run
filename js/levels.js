@@ -24,7 +24,7 @@ var levels = [
         theme:'suse',
         background: '#207720',
         template:[
-            "                                    p         cccc      ccc                                                    ",
+            "     y                              p         cccc      ccc                                                    ",
             "  123                 µµµµµµ     zzzzzzzz    zzzzzz    zzzzz      µµµµ                                         ",
             "  456       cc                                                              µµµµ                               ",
             "           zzzzzzz                  zzzz z  z zzzz zzzz                                                        ",
