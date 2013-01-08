@@ -15,10 +15,10 @@ html, body {
 
 body {
     background-color: #000000;
+    overflow: hidden;
 }
 
 #game {
-    background-color: #5c94fc;
     display: block;
     margin: 0 auto;
 }
