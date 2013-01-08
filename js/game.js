@@ -199,14 +199,17 @@ function updateCharacters() {
 
             var collides = checkCollision(actor, object);
 
-            // special actions on collisions
+            // apply collision to player movement
+             // special actions on collisions
             if (collides.top) {
                 if (object.type == 'block_coin') {
                     replaceLevelSpriteXY(object.x, object.y, "ß");
                     items.push({ sx:8, sy:9, x:object.x, y:(object.y - size.tile.target.h), type:'coin' });
+                } else {
+                    actor.pos.y = object.y + size.tile.target.h;
+                    actor.speed.y = 1;
                 }
-            }
-            if (collides.bottom) {
+            } else if (collides.bottom) {
                 // jump on enemy
                 if (object.type == 'enemy_mushroom') {
                     object.deadly = false
@@ -215,7 +218,17 @@ function updateCharacters() {
                     score++;
                     sound_jump_on_enemy()
                 }
+                actor.pos.y = object.y - actor.target_size.h;
+                actor.speed.y = 0;
+            } else if (collides.right) {
+                actor.pos.x = object.x - actor.target_size.w;
+                actor.speed.x = 0;
+            } else if (collides.left) {
+                actor.pos.x = object.x + size.tile.target.w;
+                actor.speed.x = 0;
             }
+
+            // collide from any side
             if (object && (collides.top || collides.bottom || collides.right || collides.left)) {
                 if (object.deadly == true) {
                     //items.push({ sx:, sy:9, x:actor.pos.x, y:actor.pos.y, deadly:false, type:'looser' });
@@ -231,22 +244,6 @@ function updateCharacters() {
                 }
             }
 
-            // apply collision to player movement
-            if (object) {
-                if (collides.top) {
-                    actor.pos.y = object.y + size.tile.target.h;
-                    actor.speed.y = 1;
-                } else if (collides.bottom) {
-                    actor.pos.y = object.y - actor.target_size.h;
-                    actor.speed.y = 0;
-                } else if (collides.right) {
-                    actor.pos.x = object.x - actor.target_size.w;
-                    actor.speed.x = 0;
-                } else if (collides.left) {
-                    actor.pos.x = object.x + size.tile.target.w;
-                    actor.speed.x = 0;
-                }
-            }
         })
 
         // move the player when the level is at it's border, else move the level
@@ -406,7 +403,6 @@ function drawElements() {
             size.tile.target.w,
             size.tile.target.h
         );
-
     });
 }
 
@@ -414,7 +410,7 @@ function drawElements() {
 function gameOver() {
     sound_dead()
     if (--player.lives > 0) {
-       player.pos.x -= 30
+       respawnPlayer()
     } else {
         // todo: dying animation
         actors = []
@@ -445,13 +441,26 @@ function initializeLevel() {
 function resetPlayer() {
     player.lives = 3
     score = 0
+    respawnPlayer()
+}
+
+
+// todo: re-spawn player at the closest 'y' to the left
+function respawnPlayer() {
     if (startpos = getLevelSpritePositions('y')[0]) {
-        player.pos.x = getLevelSpritePositions('y')[0].x * size.tile.target.w
-        player.pos.y = (getLevelSpritePositions('y')[0].y + line_offset_y) * size.tile.target.h
+        player.pos.x = startpos.x * size.tile.target.w
+        if (player.pos.x >= size.canvas.w/2) {
+            scroll_x = startpos.x * size.tile.target.w - size.canvas.w/2
+        } else {
+            scroll_x = 0
+        }
+        player.pos.y = (startpos.y + line_offset_y) * size.tile.target.h
     } else {
         player.pos.x = 2 * size.tile.target.w
         player.pos.y = 5 * size.tile.target.h
     }
+    player.speed.x = 0
+    player.speed.y = 0
 }
 
 function initializeTheme() {
@@ -468,12 +477,11 @@ function gameLoop() {
     var thisFrameTime = (thisLoop = new Date) - lastLoop;
     frameTime += (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;
-
     drawLevel();
     updateCharacters();
     updateElements();
-    drawActors();
     drawElements();
+    drawActors();
     drawControls();
 }
 
