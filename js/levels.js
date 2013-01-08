@@ -28,7 +28,7 @@ var levels = [
             "  123                 µµµµµµ     zzzzzzzz    zzzzzz    zzzzz      µµµµ                                         ",
             "  456       cc                                                              µµµµ                               ",
             "           zzzzzzz                  zzzz z  z zzzz zzzz                                                        ",
-            "                                    z    z  z z    z                                zzzz                      ",
+            "                                    z    z  z z    z                                zzzzz                      ",
             "  zzzzz                             zzzz z  z zzzz zz?                                                         ",
             "                      zzz??z           z z  z    z z                           zzz                             ",
             "         zzz?z                      ?zzz zzzz z?zz zzzz                                                        ",
