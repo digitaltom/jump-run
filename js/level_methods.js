@@ -42,6 +42,7 @@ function getLevelSpritePositions(type) {
 function getLastLevelSpritePosition(type, x) {
     var pos
     positions = getLevelSpritePositions(type)
+    positions.sort(function(a,b) { return a.x - b.x });
     positions.forEach(function (position) {
            if (!pos || (pos.x < position.x && position.x * size.tile.target.w <= x)){
                pos = position
