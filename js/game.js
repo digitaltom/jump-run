@@ -235,6 +235,7 @@ function updateCharacters() {
                 }
                 if (object.type == 'trampoline') {
                     actor.speed.y < 0 ? actor.speed.y = 0 : true
+                    sound_jump()
                     actor.speed.y = -0.5 * actor.speed.y - 25
                 }
                 if (object.type == 'coin') {
@@ -441,13 +442,14 @@ function initializeLevel() {
 function resetPlayer() {
     player.lives = 3
     score = 0
+    player.pos.x = 0
     respawnPlayer()
 }
 
 
 // todo: re-spawn player at the closest 'y' to the left
 function respawnPlayer() {
-    if (startpos = getLevelSpritePositions('y')[0]) {
+    if (startpos = getLastLevelSpritePosition('y', player.pos.x)) {
         player.pos.x = startpos.x * size.tile.target.w
         if (player.pos.x >= size.canvas.w/2) {
             scroll_x = startpos.x * size.tile.target.w - size.canvas.w/2

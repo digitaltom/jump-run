@@ -39,6 +39,17 @@ function getLevelSpritePositions(type) {
     return positions
 }
 
+function getLastLevelSpritePosition(type, x) {
+    var pos
+    positions = getLevelSpritePositions(type)
+    positions.forEach(function (position) {
+           if (!pos || (pos.x < position.x && position.x * size.tile.target.w <= x)){
+               pos = position
+           }
+    })
+    return pos
+}
+
 var blocks = {};
 blocks['#'] = {sx:5, sy:0, collide:true, solid:true};
 blocks['x'] = {sx:0, sy:0, collide:true, solid:true};
