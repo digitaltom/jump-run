@@ -83,7 +83,9 @@ function registerControls() {
     // touch based controls:
 
     if (is_touch_device()) {
-        document.getElementById("github-fork-me").style.visibility = "hidden"
+        if (document.getElementById("github-fork-me")) {
+            document.getElementById("github-fork-me").style.visibility = "hidden"
+        }
         document.getElementById("pad-controls").style.visibility = "visible"
     }
 

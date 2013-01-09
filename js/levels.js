@@ -33,7 +33,7 @@ var levels = [
             "                      zzz??z           z z  z    z z                           zzz                             ",
             "         zzz?z                      ?zzz zzzz z?zz zzzz                                                        ",
             "                                                                         zzz                                   ",
-            "                 p            p                 p p p                                                          ",
+            "                 p  >         p                 p p p                                                          ",
             "  ~~~~     zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz        zzzz                                  Z     ",
             "   ^                                                                                                    ZZZ    ",
             "  /ü`                                                                     p         p                   ZBZ    ",
