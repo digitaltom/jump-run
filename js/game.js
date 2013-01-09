@@ -35,7 +35,6 @@ var speed = {
         velocity_y:25,
         gravity:2,
         friction:0.8,
-        speed_limit_x:10,
         speed_limit_y:25
     },
     fps:30
@@ -139,19 +138,17 @@ function updateCharacters() {
 
     actors.forEach(function (actor) {
 
-        if (Math.abs(actor.speed.x) < speed.player.speed_limit_x) {
-            if (actor.speed.y == 0) {
-                if (held.left && actor.speed.y == 0) {
-                    actor.speed.x -= speed.player.velocity_x;
-                } else if (held.right && actor.speed.y == 0) {
-                    actor.speed.x += speed.player.velocity_x;
-                }
-            } else {
-                if (held.left) {
-                    actor.speed.x -= speed.player.velocity_x_jump;
-                } else if (held.right) {
-                    actor.speed.x += speed.player.velocity_x_jump;
-                }
+        if (actor.speed.y == 0) {
+            if (held.left && actor.speed.y == 0) {
+                actor.speed.x -= speed.player.velocity_x;
+            } else if (held.right && actor.speed.y == 0) {
+                actor.speed.x += speed.player.velocity_x;
+            }
+        } else {
+            if (held.left) {
+                actor.speed.x -= speed.player.velocity_x_jump;
+            } else if (held.right) {
+                actor.speed.x += speed.player.velocity_x_jump;
             }
         }
         if (held.up && actor.speed.y == 0) {
@@ -169,12 +166,9 @@ function updateCharacters() {
         if (Math.abs(actor.speed.x) < 0.8) actor.speed.x = 0;
         if (Math.abs(actor.speed.y) < 0.1) actor.speed.y = 0;
 
-        // apply speed limit
-        if (Math.abs(actor.speed.x) > speed.player.speed_limit_x) {
-            actor.speed.x = speed.player.speed_limit_x * (actor.speed.x / Math.abs(actor.speed.x))
-        }
-        if (Math.abs(actor.speed.y) > speed.player.speed_limit_y) {
-            actor.speed.y = speed.player.speed_limit_y * (actor.speed.y / Math.abs(actor.speed.y))
+        // apply speed limit when falling down
+        if (actor.speed.y > speed.player.speed_limit_y) {
+            actor.speed.y = speed.player.speed_limit_y
         }
 
         actor.pos.x += actor.speed.x;
@@ -238,6 +232,10 @@ function updateCharacters() {
                 }
                 if (object.type == 'exit') {
                     levelWin()
+                }
+                if (object.type == 'trampoline') {
+                    actor.speed.y < 0 ? actor.speed.y = 0 : true
+                    actor.speed.y = -0.5 * actor.speed.y - 20
                 }
                 if (object.type == 'coin') {
                     items.splice(items.indexOf(object), 1)
