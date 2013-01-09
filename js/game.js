@@ -235,7 +235,7 @@ function updateCharacters() {
                 }
                 if (object.type == 'trampoline') {
                     actor.speed.y < 0 ? actor.speed.y = 0 : true
-                    actor.speed.y = -0.5 * actor.speed.y - 20
+                    actor.speed.y = -0.5 * actor.speed.y - 25
                 }
                 if (object.type == 'coin') {
                     items.splice(items.indexOf(object), 1)
@@ -458,6 +458,7 @@ function respawnPlayer() {
     } else {
         player.pos.x = 2 * size.tile.target.w
         player.pos.y = 5 * size.tile.target.h
+        scroll_x = 0
     }
     player.speed.x = 0
     player.speed.y = 0
