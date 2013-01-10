@@ -99,17 +99,14 @@ function drawLevel() {
         scroll_x = 0;
     }
     scroll_x_start = scroll_x;
+    // first tile to display:
+    var index_x_start = scroll_x / size.tile.target.w
+    var offset_x = scroll_x % size.tile.target.w
+    // last tile to show
+    var index_x_max = index_x_start + size.tiles.target.w + 1
 
     current_level.level.forEach(function (linecontent, index_y) {
-
             index_y += line_offset_y;
-
-            // first tile to display:
-            var index_x_start = scroll_x / size.tile.target.w
-            var offset_x = scroll_x % size.tile.target.w
-            // last tile to show
-            var index_x_max = index_x_start + size.tiles.target.w + 1
-
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
                 var object = getLevelObject(linecontent.charAt(index_x), index_x, index_y);
                 if (object) {

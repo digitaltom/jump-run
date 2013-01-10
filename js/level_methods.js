@@ -17,7 +17,6 @@ function getLevelSprite(pos, line) {
 }
 
 function getIndicesOf(searchStr, str) {
-    //alert(searchStr + ' ' + str)
     var startIndex = 0, searchStrLen = searchStr.length;
     var index, indices = [];
     while ((index = str.indexOf(searchStr, startIndex)) > -1) {
