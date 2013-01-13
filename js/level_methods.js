@@ -30,7 +30,7 @@ function getLevelSpritePositions(type) {
     var positions = []
     current_level.level.forEach(function (linecontent, pos_y) {
             getIndicesOf(type, linecontent).forEach(function (pos_x) {
-                    positions.push({x: pos_x, y: pos_y})
+                    positions.push({x:pos_x, y:pos_y})
                 }
             )
         }
@@ -41,11 +41,13 @@ function getLevelSpritePositions(type) {
 function getLastLevelSpritePosition(type, x) {
     var pos
     positions = getLevelSpritePositions(type)
-    positions.sort(function(a,b) { return a.x - b.x });
+    positions.sort(function (a, b) {
+        return a.x - b.x
+    });
     positions.forEach(function (position) {
-           if (!pos || (pos.x < position.x && position.x * size.tile.target.w <= x)){
-               pos = position
-           }
+        if (!pos || (pos.x < position.x && position.x * size.tile.target.w <= x)) {
+            pos = position
+        }
     })
     return pos
 }
@@ -110,3 +112,29 @@ function getLevelObject(character) {
     var object = blocks[character];
     return object
 }
+
+function prerenderLevelObjects() {
+    for (char in blocks) {
+        var block = blocks[char]
+        var canvas = document.createElement('canvas')
+        canvas.width = size.tile.target.w
+        canvas.height = size.tile.target.h
+        canvas.getContext("2d").drawImage(
+            spriteMap,
+            block.sx * (size.tile.source.w + 1) + 0.5,
+            block.sy * (size.tile.source.h + 1) + 0.5,
+            size.tile.source.w - 0.8,
+            size.tile.source.h - 0.8,
+            0,
+            0,
+            size.tile.target.w,
+            size.tile.target.h);
+        block.sprite = new Image();
+        block.sprite.src = canvas.toDataURL("image/png");
+    }
+}
+
+Object.prototype.cloneBlock = function () {
+    return {sx:this.sx, sy:this.sy, collide:this.collide, deadly:this.deadly,
+        solid:this.solid, speed_x:this.speed_x, type:this.type, x:this.x, y:this.y};
+};

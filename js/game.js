@@ -72,14 +72,6 @@ Number.prototype.inRange = function (a, b) {
     return ( n >= a && n <= b );
 };
 
-Object.prototype.clone = function() {
-    var copy = this.constructor();
-    for (var attr in this) {
-        if (this.hasOwnProperty(attr)) copy[attr] = this[attr];
-    }
-    return copy;
-};
-
 
 
 function drawLevel() {
@@ -87,13 +79,6 @@ function drawLevel() {
     // clear the canvas before repainting
     ctx.clearRect(0, 0, size.canvas.w, size.canvas.h);
     collisionMap = [];
-
-    // cache tile sizes
-    var sw = size.tile.source.w;
-    var sh = size.tile.source.h;
-    var tw = size.tile.target.w;
-    var th = size.tile.target.h;
-
 
     if (scroll_x < 0) {
         scroll_x = 0;
@@ -110,17 +95,17 @@ function drawLevel() {
             for (var index_x = index_x_start; index_x < index_x_max; index_x++) {
                 var object = getLevelObject(linecontent.charAt(index_x), index_x, index_y);
                 if (object) {
-                    object.x = index_x * tw - offset_x
-                    object.y = index_y * th
-                    ctx.drawImage(spriteMap, object.sx * (sw + 1) + 0.5, object.sy * (sh + 1) + 0.5, sw - 0.8, sh - 0.8, object.x - index_x_start * tw, object.y, tw, th);
+                    object.x = index_x * size.tile.target.w - offset_x
+                    object.y = index_y * size.tile.target.h
+                    ctx.drawImage(object.sprite, object.x - index_x_start * size.tile.target.w, object.y)
                     if (object.collide) {
-                        collisionMap.push(object.clone());
+                        collisionMap.push(object.cloneBlock());
                     }
                     if (object.type == 'enemy_mushroom') {
-                        items.push(object.clone());
+                        items.push(object.cloneBlock());
                         replaceLevelSprite(index_x, index_y - line_offset_y, " ");
                     } else if (object.type == 'coin') {
-                        items.push(object.clone());
+                        items.push(object.cloneBlock());
                         replaceLevelSprite(index_x, index_y - line_offset_y, " ");
                     }
                 }
@@ -470,6 +455,7 @@ function initializeTheme() {
     player.sprite.y = 32
     preload_sounds()
     document.getElementById('game').style.backgroundColor = current_level.background;
+    prerenderLevelObjects();
 }
 
 function gameLoop() {
