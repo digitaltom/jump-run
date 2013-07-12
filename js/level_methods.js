@@ -130,7 +130,12 @@ function prerenderLevelObjects() {
             size.tile.target.w,
             size.tile.target.h);
         block.sprite = new Image();
-        block.sprite.src = canvas.toDataURL("image/png");
+        try {
+            block.sprite.src = canvas.toDataURL("image/png");
+        }
+        catch (err) {
+            // image loading fails locally in chromium
+        }
     }
 }
 

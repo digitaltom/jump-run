@@ -97,7 +97,20 @@ function drawLevel() {
                 if (object) {
                     object.x = index_x * size.tile.target.w - offset_x
                     object.y = index_y * size.tile.target.h
-                    ctx.drawImage(object.sprite, object.x - index_x_start * size.tile.target.w, object.y)
+
+                    // workaround failed local image load
+                    if (object.sprite.src){
+                        ctx.drawImage(object.sprite, object.x - index_x_start * size.tile.target.w, object.y)
+                    } else {
+                        ctx.drawImage(spriteMap,
+                            object.sx * (size.tile.source.w + 1) + 0.5,
+                            object.sy * (size.tile.source.h + 1) + 0.5,
+                            size.tile.source.w - 0.8,
+                            size.tile.source.h - 0.8,
+                            object.x - index_x_start * size.tile.target.w, object.y,
+                            size.tile.target.w, size.tile.target.h)
+                    }
+
                     if (object.collide) {
                         collisionMap.push(object.cloneBlock());
                     }
