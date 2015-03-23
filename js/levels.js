@@ -1,7 +1,7 @@
 var levels = [
     {
         name:"Level 0",
-        theme:'snoop',
+        theme:'suse',
         background: '#8d8bb3',
         template:[
             "      13           ()      1223                                              ()                                                                                                                        f                                            ",
@@ -42,7 +42,7 @@ var levels = [
     },
     {
         name:"Mario Level 1",
-        theme:'super_mario',
+        theme:'suse',
         background: '#5c94fc',
         template:[
             "      13           13      1223                                              13                                                                                                                                                                     ",
