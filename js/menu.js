@@ -42,6 +42,18 @@ if (button = document.getElementById("button-play3")) {
     }, false);
 }
 
+if (button = document.getElementById("button-play4")) {
+    button.addEventListener('click', function (event) {
+        current_level = levels[3];
+        startGame();
+    }, false);
+
+    button.addEventListener('mouseover', function (event) {
+        current_level = levels[3];
+        load_level()
+    }, false);
+}
+
 
 var start_menu = document.getElementById("game-menu");
 

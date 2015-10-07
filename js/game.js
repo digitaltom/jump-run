@@ -1,4 +1,6 @@
-var ctx;
+var canvas = document.getElementById("game");
+var ctx = canvas.getContext("2d");
+
 var ticks = 0;
 var spriteMap = new Image;
 var actors;
@@ -487,8 +489,6 @@ function gameLoop() {
 
 function initGame() {
     window.clearInterval(gameInterval);
-    var canvas = document.getElementById("game");
-    ctx = canvas.getContext("2d");
     hideMenus()
     hideControls()
     // draw initial level for menu background

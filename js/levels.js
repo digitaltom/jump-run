@@ -1,7 +1,7 @@
 var levels = [
     {
         name:"Level 0",
-        theme:'suse',
+        theme:'snoop',
         background: '#8d8bb3',
         template:[
             "      13           ()      1223                                              ()                                                                                                                        f                                            ",
@@ -25,7 +25,7 @@ var levels = [
         background: '#207720',
         template:[
             "     y                              p         cccc      ccc                                                                   ",
-            "  123                 µµµµµµ     zzzzzzzz    zzzzzz    zzzzz      µµµµ        ~                                               ",
+            "  123                            zzzzzzzz    zzzzzz    zzzzz      µµµµ        ~                                               ",
             "  456       cc  ~                                                           µµµµ                                              ",
             "           zzzzzzz                  zzzz z  z zzzz zzzz                                ~                                      ",
             "                          y         z    z  z z    z                     y          zzzzz                                     ",
@@ -42,7 +42,7 @@ var levels = [
     },
     {
         name:"Mario Level 1",
-        theme:'suse',
+        theme:'super_mario',
         background: '#5c94fc',
         template:[
             "      13           13      1223                                              13                                                                                                                                                                     ",
@@ -58,6 +58,27 @@ var levels = [
             "   /ü`            ^              qw       as      as   /ü`    as        ^                                       /ü`                    ^                          HHH  HHH /ü` HHHH  HHH    ^   qw             qw HHHHHHHH    /ü`  |   XXOXX  ^     ",
             "  /ügü`      {=} /ü`  p          as       as p{=} as p/ügü`p  as  {==} /ü`      {=}                  {=}      p/ügü`p          {==}   /ü`     /`p p  p p         HHHH==HHHHügüHHHHH  HHHH} /ü`  as   {=}   p p asHHHHHHHHH   /ügü` H   XXBXX}/ü`    ",
             "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@@xxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        ]
+    },
+    {
+        name:"SCC",
+        theme:'suse',
+        background: '#383c3e',
+        template:[
+            "     y                              p         cccc      ccc                                                                   ",
+            "  123                 µµµµµµ     zzzzzzzz    zzzzzz    zzzzz      µµµµ        ~                                               ",
+            "  456       cc  ~                                                           µµµµ                                              ",
+            "           zzzzzzz                  zzzz z  z zzzz zzzz                                ~                                      ",
+            "                          y         z    z  z z    z                     y          zzzzz                                     ",
+            "  zzzzz                             zzzz z  z zzzz zz?                                                                        ",
+            "                      zzz??z           z z  z    z z                           zzz                                            ",
+            "         zzz?z                      ?zzz zzzz z?zz zzzz                                                                       ",
+            "                                                                         zzz                                                  ",
+            "                 p            p                 p p p     ~                                                                   ",
+            "           zzzzzzzzzzzzzzzzzzzzzz    zzzzzzz?z?z?z?zzzzzzzz        zzzz                                  Z                    ",
+            "   ^                                      y                                                             ZZZ                   ",
+            "  /ü`                                                                     p         p                   ZBZ                   ",
+            "88888888888@@@@@@@@@@@@@@@@@@@@@@88888888888888888888888888888888888@@888888888888888888@@@@@@@@@88888888888888888888888888888"
         ]
     }
 ];
